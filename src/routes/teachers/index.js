@@ -63,23 +63,23 @@ const del = {
 export default [
   {
     method: 'GET',
-    path: '/teacher',
+    path: '/teachers',
     config: list
   }, {
     method: 'GET',
-    path: '/teacher/{teacherId}',
+    path: '/teachers/{teacherId}',
     config: get
   }, {
     method: 'POST',
-    path: '/teacher',
+    path: '/teachers',
     config: register
   }, {
     method: 'PUT',
-    path: '/teacher/{teacherId}',
+    path: '/teachers/{teacherId}',
     config: update
   }, {
     method: 'DELETE',
-    path: '/teacher/{teacherId}',
+    path: '/teachers/{teacherId}',
     config: del
   }
 ];
