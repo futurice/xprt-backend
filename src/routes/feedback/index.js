@@ -14,6 +14,7 @@ const list = {
 const get = {
   handler: (request, reply) => {
     knex('feedback')
+    .first()
     .where('id', request.params.expertId)
     .then(reply)
     .catch(err => {

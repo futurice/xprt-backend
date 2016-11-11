@@ -14,6 +14,7 @@ const list = {
 const get = {
   handler: (request, reply) => {
     knex('teachers')
+    .first()
     .where('id', request.params.teacherId)
     .then(reply)
     .catch(err => {
