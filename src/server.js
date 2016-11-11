@@ -44,6 +44,9 @@ export default () => {
         },
         verifyOptions: { algorithms: ['HS256'] }
       });
+
+      // Register routes
+      server.route(routes);
     });
 
     if (process.env.NODE_ENV === 'test') {
