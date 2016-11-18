@@ -9,7 +9,9 @@ let dummyPassword = '$2a$10$jqtfUwulMw6xqGUA.IsjkuAooNkAjPT3FJ9rRiUoSTsUpNTD8Mcx
 fixtureFactory.register('expert', {
   id: 'random.number',
   createdAt: 'date.recent',
-  photograph: 'image.imageUrl',
+  photograph: (fixtures, options, dataModel, faker) => (
+    faker.image.imageUrl() + '?' + faker.random.number()
+  ),
   name: (fixtures, options, dataModel, faker) => (
     faker.name.firstName() + ' ' + faker.name.lastName()
   ),
@@ -26,7 +28,9 @@ fixtureFactory.register('expert', {
 fixtureFactory.register('teacher', {
   id: 'random.number',
   createdAt: 'date.recent',
-  photograph: 'image.imageUrl',
+  photograph: (fixtures, options, dataModel, faker) => (
+    faker.image.imageUrl() + '?' + faker.random.number()
+  ),
   name: (fixtures, options, dataModel, faker) => (
     faker.name.firstName() + ' ' + faker.name.lastName()
   ),
