@@ -24,7 +24,7 @@ exports.up = function(knex) {
       table.text('name').notNullable();
       table.text('title').notNullable();
       table.text('description').notNullable();
-      table.text('subjects').notNullable();
+      table.json('subjects').notNullable();
       table.text('area').notNullable();
       table.text('username').notNullable().unique();
       table.text('password').notNullable();

@@ -17,7 +17,9 @@ fixtureFactory.register('expert', {
   ),
   title: 'name.jobTitle',
   description: 'lorem.sentence',
-  subjects: 'random.words',
+  subjects: (fixtures, options, dataModel, faker) => (
+    JSON.stringify([faker.random.word(), faker.random.word(), faker.random.word()])
+  ),
   area: 'address.city',
   username: 'internet.userName',
   password: dummyPassword,
