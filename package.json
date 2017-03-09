@@ -1,9 +1,9 @@
 {
-  "name": "backend-hipster-kit",
-  "author": "FruitieX",
-  "description": "Get started with backend development",
+  "name": "xprt-backend",
+  "author": "Futurice",
+  "description": "Backend for XPRT project",
   "license": "MIT",
-  "bugs": "https://github.com/FruitieX/backend-hipster-kit/issues",
+  "bugs": "https://github.com/futurice/xprt-backend/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/FruitieX/backend-hipster-kit.git"
@@ -41,6 +41,7 @@
     "babel-preset-es2015-node": "^6.1.1",
     "babel-preset-stage-0": "^6.22.0",
     "bcryptjs": "^2.4.3",
+    "bell": "^8.5.0",
     "bluebird": "^3.4.1",
     "boom": "^4.2.0",
     "dotenv": "^4.0.0",
@@ -63,6 +64,8 @@
     "node-uuid": "^1.4.7",
     "pg": "^6.1.2",
     "prompt": "^1.0.0",
+    "request": "^2.80.0",
+    "request-promise": "^4.1.1",
     "white-out": "^2.0.0"
   },
   "devDependencies": {

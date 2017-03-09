@@ -1,25 +1,96 @@
-const fixtureFactory = require('fixture-factory');
+/*eslint-disable func-names*/
+'use strict';
+
+let fixtureFactory = require('fixture-factory');
 
 // 'foobar'
-const dummyPassword = '$2a$10$jqtfUwulMw6xqGUA.IsjkuAooNkAjPT3FJ9rRiUoSTsUpNTD8McxC';
+let dummyPassword = '$2a$10$jqtfUwulMw6xqGUA.IsjkuAooNkAjPT3FJ9rRiUoSTsUpNTD8McxC';
 
-fixtureFactory.register('user', {
-  email: 'internet.email',
+fixtureFactory.register('expert', {
+  id: 'random.number',
+  createdAt: 'date.recent',
+  photograph: (fixtures, options, dataModel, faker) => (
+    faker.image.imageUrl() + '?' + faker.random.number()
+  ),
+  name: (fixtures, options, dataModel, faker) => (
+    faker.name.firstName() + ' ' + faker.name.lastName()
+  ),
+  title: 'name.jobTitle',
+  description: 'lorem.sentence',
+  subjects: (fixtures, options, dataModel, faker) => (
+    JSON.stringify([faker.random.word(), faker.random.word(), faker.random.word()])
+  ),
+  area: 'address.city',
   password: dummyPassword,
-  description: 'lorem.sentences',
-  scope: 'user',
+  email: 'internet.email',
+  phone: 'phone.phoneNumber',
 });
 
-// Generate one test admin user
-const testUser = Object.assign({}, fixtureFactory.generateOne('user'), {
-  email: 'foo@bar.com',
-  scope: 'admin',
+fixtureFactory.register('teacher', {
+  id: 'random.number',
+  createdAt: 'date.recent',
+  photograph: (fixtures, options, dataModel, faker) => (
+    faker.image.imageUrl() + '?' + faker.random.number()
+  ),
+  name: (fixtures, options, dataModel, faker) => (
+    faker.name.firstName() + ' ' + faker.name.lastName()
+  ),
+  title: 'name.jobTitle',
+  school: 'company.companyName',
+  description: 'lorem.sentence',
+  address: 'address.streetAddress',
+  password: dummyPassword,
+  email: 'internet.email',
+  phone: 'phone.phoneNumber',
 });
 
-exports.seed = knex => (
-  knex('users')
-    .insert(testUser)
-    .then(() => (
-      knex.batchInsert('users', fixtureFactory.generate('user', 10))
-    ))
-);
+fixtureFactory.register('admin', {
+  id: 'random.number',
+  createdAt: 'date.recent',
+  username: 'internet.userName',
+  password: dummyPassword,
+  email: 'internet.email',
+});
+
+fixtureFactory.register('lecture', {
+  id: 'random.number',
+  createdAt: 'date.recent',
+  title: 'lorem.words',
+  description: 'lorem.sentence',
+  dates: 'date.future',
+  teacherNote: 'lorem.sentence',
+  expertNote: 'lorem.sentence',
+  targetStudents: 'lorem.sentence',
+  creatorId: 'random.number',
+  creatorType: (fixtures, options, dataModel, faker) => (
+    Math.random() < 0.5 ? 'teacher' : 'expert'
+  ),
+  area: 'address.city',
+});
+
+fixtureFactory.register('feedback', {
+  createdAt: 'date.recent',
+  id: 'random.number',
+  text: 'lorem.sentences',
+  creatorType: (fixtures, options, dataModel, faker) => (
+    Math.random() < 0.5 ? 'teacher' : 'expert'
+  ),
+  email: 'internet.email',
+});
+
+exports.seed = function(knex) {
+  return knex
+  .batchInsert('experts', fixtureFactory.generate('expert', 10))
+  .then(() => {
+    return knex.batchInsert('teachers', fixtureFactory.generate('teacher', 10));
+  })
+  .then(() => {
+    return knex.batchInsert('admins', fixtureFactory.generate('admin', 3));
+  })
+  .then(() => {
+    return knex.batchInsert('lectures', fixtureFactory.generate('lecture', 50));
+  })
+  .then(() => {
+    return knex.batchInsert('feedback', fixtureFactory.generate('feedback', 10));
+  });
+};

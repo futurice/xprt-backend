@@ -1,7 +1,7 @@
 import knex from '../utils/db';
 
 const userSummaryFields = ['id', 'email'];
-const userDetailedFields = ['id', 'email', 'description', 'scope', 'image'];
+const userDetailedFields = ['id', 'email', 'description', 'locale', 'scope', 'image', 'imageUrl'];
 
 export const dbGetUsers = () => (
   knex('users')
@@ -12,6 +12,12 @@ export const dbGetUser = id => (
   knex('users')
     .first(userDetailedFields)
     .where({ id })
+);
+
+export const dbGetOAuth2User = oauth2Id => (
+  knex('users')
+    .first(userDetailedFields)
+    .where({ oauth2Id })
 );
 
 export const dbUpdateUser = (id, fields) => (

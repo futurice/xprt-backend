@@ -9,6 +9,7 @@ import {
   delUser,
   authUser,
   registerUser,
+  oauth2Authenticate,
 } from '../controllers/users';
 
 const validateUserId = {
@@ -24,6 +25,7 @@ const validateRegistrationFields = {
     payload: {
       email: Joi.string().email().required(),
       password: Joi.string().required(),
+      oauth2Id: Joi.any().forbidden(), // Disallow setting oauth2Id
     },
   },
 };
@@ -33,7 +35,7 @@ const users = [
   {
     method: 'GET',
     path: '/users',
-    config: getAuthWithScope('user'),
+    config: getAuthWithScope('admin'),
     handler: getUsers,
   },
 
@@ -41,7 +43,7 @@ const users = [
   {
     method: 'GET',
     path: '/users/{userId}',
-    config: merge({}, validateUserId, getAuthWithScope('user')),
+    config: merge({}, validateUserId, getAuthWithScope('expert')),
     handler: getUser,
   },
 
@@ -49,7 +51,7 @@ const users = [
   {
     method: 'POST',
     path: '/users/{userId}',
-    config: merge({}, validateUserId, getAuthWithScope('user')),
+    config: merge({}, validateUserId, getAuthWithScope('expert')),
     handler: updateUser,
   },
 
@@ -75,6 +77,16 @@ const users = [
     path: '/users',
     config: validateRegistrationFields,
     handler: registerUser,
+  },
+
+  // Register/authenticate via OAuth2
+  {
+    method: ['GET', 'POST'],
+    path: '/oauth2/callback',
+    config: {
+      auth: 'hundred',
+    },
+    handler: oauth2Authenticate,
   },
 ];
 

@@ -27,6 +27,8 @@ export default Glue.compose({
   registrations: [{
     plugin: 'hapi-auth-jwt2',
   }, {
+    plugin: 'bell',
+  }, {
     plugin: {
       register: 'good',
       options: goodOptions,
@@ -34,14 +36,23 @@ export default Glue.compose({
   }],
 })
 .then((server) => {
-  server.auth.strategy('jwt', 'jwt', {
+  const jwtStrategyOptions = {
     key: config.auth.secret,
     validateFunc: validateJwt,
     verifyOptions: { algorithms: config.auth.algorithms },
-  });
+  };
+
+  server.auth.strategy('jwt', 'jwt', jwtStrategyOptions);
 
   // Uncomment to require authentication by default in all routes
   // server.auth.default('jwt');
+
+  if (config.oauth2.strategyOptions.provider.auth) {
+    server.auth.strategy('hundred', 'bell', config.oauth2.strategyOptions);
+  } else {
+    server.auth.strategy('hundred', 'jwt', jwtStrategyOptions);
+    console.warn('Warning: running without OAuth2 support');
+  }
 
   // Register routes once auth strategy is set up
   return new Promise((resolve) => {

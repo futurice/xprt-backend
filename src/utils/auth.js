@@ -37,15 +37,19 @@ export const getAuthWithScope = scope => ({
 });
 
 export const comparePasswords = (passwordAttempt, user) => (
-  new Promise((resolve, reject) => (
-    bcrypt.compare(passwordAttempt, user.password, (err, isValid) => {
+  new Promise((resolve, reject) => {
+    if (!passwordAttempt) {
+      return reject('Incorrect password attempt');
+    }
+
+    return bcrypt.compare(passwordAttempt, user.password, (err, isValid) => {
       if (!err && isValid) {
         resolve(user);
       } else {
         reject('Incorrect password attempt');
       }
-    })
-  ))
+    });
+  })
 );
 
 // Verify credentials for user
@@ -92,6 +96,10 @@ export const createToken = (id, email, scope) => ({
 // Return promise which resolves to hash of given password
 export const hashPassword = password => (
   new Promise((resolve, reject) => {
+    if (!password) {
+      reject('Empty password not allowed!');
+    }
+
     bcrypt.genSalt(config.auth.saltRounds, (saltErr, salt) => {
       if (saltErr) {
         reject(saltErr);

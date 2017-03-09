@@ -61,6 +61,18 @@ Recommendation for generating `[secret-string]`:
 $ node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"
 ```
 
+### OAuth2 config parameters
+
+Required to support OAuth2 logins:
+
+```
+OAUTH2_CLIENT_ID=[client-id]
+OAUTH2_CLIENT_SECRET=[client-secret]
+OAUTH2_HOST=https://example.com/oauth/authorize
+OAUTH2_TOKEN_HOST=https://example.com/oauth/token
+OAUTH2_USER_ENDPOINT=https://example.com/api/v1/me.json
+```
+
 ## Run backend
 ```
 $ yarn start
