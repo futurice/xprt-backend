@@ -1,55 +1,43 @@
-/*eslint-disable func-names*/
-'use strict';
-
-let fixtureFactory = require('fixture-factory');
+const fixtureFactory = require('fixture-factory');
 
 // 'foobar'
-let dummyPassword = '$2a$10$jqtfUwulMw6xqGUA.IsjkuAooNkAjPT3FJ9rRiUoSTsUpNTD8McxC';
+const dummyPassword = '$2a$10$jqtfUwulMw6xqGUA.IsjkuAooNkAjPT3FJ9rRiUoSTsUpNTD8McxC';
 
-fixtureFactory.register('expert', {
+const scopes = ['expert', 'teacher'];
+
+let isExpert = false;
+fixtureFactory.register('user', {
   id: 'random.number',
   createdAt: 'date.recent',
-  photograph: (fixtures, options, dataModel, faker) => (
-    faker.image.imageUrl() + '?' + faker.random.number()
-  ),
+  scope: () => {
+    const scope = scopes[Math.floor(Math.random() * scopes.length)];
+    isExpert = scope === 'expert';
+
+    return scope;
+  },
   name: (fixtures, options, dataModel, faker) => (
-    faker.name.firstName() + ' ' + faker.name.lastName()
+    `${faker.name.firstName()} ${faker.name.lastName()}`
   ),
-  title: 'name.jobTitle',
-  description: 'lorem.sentence',
-  subjects: (fixtures, options, dataModel, faker) => (
-    JSON.stringify([faker.random.word(), faker.random.word(), faker.random.word()])
-  ),
-  area: 'address.city',
-  password: dummyPassword,
   email: 'internet.email',
-  phone: 'phone.phoneNumber',
-});
-
-fixtureFactory.register('teacher', {
-  id: 'random.number',
-  createdAt: 'date.recent',
-  photograph: (fixtures, options, dataModel, faker) => (
-    faker.image.imageUrl() + '?' + faker.random.number()
-  ),
-  name: (fixtures, options, dataModel, faker) => (
-    faker.name.firstName() + ' ' + faker.name.lastName()
-  ),
-  title: 'name.jobTitle',
-  school: 'company.companyName',
+  password: dummyPassword,
+  locale: 'fi',
   description: 'lorem.sentence',
+  imageUrl: (fixtures, options, dataModel, faker) => (
+    `${faker.image.imageUrl()}?${faker.random.number()}`
+  ),
+
+  title: 'name.jobTitle',
   address: 'address.streetAddress',
-  password: dummyPassword,
-  email: 'internet.email',
   phone: 'phone.phoneNumber',
-});
+  area: 'address.city',
 
-fixtureFactory.register('admin', {
-  id: 'random.number',
-  createdAt: 'date.recent',
-  username: 'internet.userName',
-  password: dummyPassword,
-  email: 'internet.email',
+  subjects: (fixtures, options, dataModel, faker) => {
+    if (isExpert) {
+      return JSON.stringify([faker.random.word(), faker.random.word(), faker.random.word()]);
+    }
+
+    return undefined;
+  },
 });
 
 fixtureFactory.register('lecture', {
@@ -61,36 +49,32 @@ fixtureFactory.register('lecture', {
   teacherNote: 'lorem.sentence',
   expertNote: 'lorem.sentence',
   targetStudents: 'lorem.sentence',
-  creatorId: 'random.number',
-  creatorType: (fixtures, options, dataModel, faker) => (
-    Math.random() < 0.5 ? 'teacher' : 'expert'
-  ),
+  teacherId: 'random.number',
   area: 'address.city',
 });
 
 fixtureFactory.register('feedback', {
-  createdAt: 'date.recent',
   id: 'random.number',
+  createdAt: 'date.recent',
   text: 'lorem.sentences',
-  creatorType: (fixtures, options, dataModel, faker) => (
+  creatorType: () => (
     Math.random() < 0.5 ? 'teacher' : 'expert'
   ),
   email: 'internet.email',
 });
 
-exports.seed = function(knex) {
-  return knex
-  .batchInsert('experts', fixtureFactory.generate('expert', 10))
-  .then(() => {
-    return knex.batchInsert('teachers', fixtureFactory.generate('teacher', 10));
-  })
-  .then(() => {
-    return knex.batchInsert('admins', fixtureFactory.generate('admin', 3));
-  })
-  .then(() => {
-    return knex.batchInsert('lectures', fixtureFactory.generate('lecture', 50));
-  })
-  .then(() => {
-    return knex.batchInsert('feedback', fixtureFactory.generate('feedback', 10));
-  });
+// Generate one test admin user
+const testUser = {
+  ...fixtureFactory.generateOne('user'),
+
+  email: 'foo@bar.com',
+  scope: 'admin',
 };
+
+exports.seed = knex => (
+  knex('users')
+    .insert(testUser)
+    .then(() => knex.batchInsert('users', fixtureFactory.generate('user', 30)))
+    .then(() => knex.batchInsert('lectures', fixtureFactory.generate('lecture', 50)))
+    .then(() => knex.batchInsert('feedback', fixtureFactory.generate('feedback', 10)))
+);

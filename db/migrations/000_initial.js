@@ -35,7 +35,7 @@ exports.up = knex => (
       table.text('teacherNote').notNullable();
       table.text('expertNote').notNullable();
       table.text('targetStudents').notNullable();
-      table.text('expertId').notNullable();
+      table.text('expertId');
       table.text('teacherId').notNullable();
       table.text('area').notNullable();
     })
