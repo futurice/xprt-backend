@@ -17,7 +17,7 @@ const validateExpertId = {
 const validateExpertFilter = {
   validate: {
     query: {
-      filter: Joi.string(),
+      filter: Joi.string().allow(''),
     },
   },
 };
