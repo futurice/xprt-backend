@@ -14,11 +14,17 @@ const expertDetailedFields = [
   'subjects',
 ];
 
-export const dbGetExperts = () => (
-  knex('users')
+export const dbGetExperts = (filter) => {
+  let q = knex('users')
     .where({ scope: 'expert' })
-    .select(expertSummaryFields)
-);
+    .select(expertSummaryFields);
+
+  if (filter) {
+    q = q.whereRaw("LOWER(name) LIKE '%' || LOWER(?) || '%'", filter);
+  }
+
+  return q;
+};
 
 export const dbGetExpert = id => (
   knex('users')

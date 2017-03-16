@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import merge from 'lodash/merge';
 
 import {
   getExperts,
@@ -13,11 +14,20 @@ const validateExpertId = {
   },
 };
 
+const validateExpertFilter = {
+  validate: {
+    query: {
+      filter: Joi.string(),
+    },
+  },
+};
+
 const experts = [
   // Get a list of all experts
   {
     method: 'GET',
     path: '/experts',
+    config: validateExpertFilter,
     handler: getExperts,
   },
 
