@@ -20,7 +20,7 @@ NOTE: If you get errors when running the above command:
 [Troubleshooting PostgreSQL connection errors](/docs/POSTGRESQL.md)
 
 ```
-postgres=# CREATE DATABASE backendkit;
+postgres=# CREATE DATABASE xprt;
 postgres=# \q
 ```
 
