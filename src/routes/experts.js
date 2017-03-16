@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import merge from 'lodash/merge';
 
 import {
   getExperts,
