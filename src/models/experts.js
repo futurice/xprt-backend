@@ -1,12 +1,20 @@
 import knex from '../utils/db';
 
-const expertSummaryFields = ['id', 'name', 'email'];
+const expertSummaryFields = [
+  'id',
+  'name',
+  'email',
+  'imageUrl',
+  'area',
+  'subjects',
+];
+
 const expertDetailedFields = [
   'id',
   'name',
   'email',
   'description',
-  'image',
+  'imageUrl',
   'title',
   'address',
   'phone',
