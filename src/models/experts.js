@@ -28,7 +28,12 @@ export const dbGetExperts = (filter) => {
     .select(expertSummaryFields);
 
   if (filter) {
-    q = q.whereRaw("LOWER(name) LIKE '%' || LOWER(?) || '%'", filter);
+    q = q.select(expertDetailedFields);
+    q = q.whereRaw("LOWER(name) LIKE '%' || LOWER(?) || '%'", filter)
+    .orWhereRaw("LOWER(title) LIKE '%' || LOWER(?) || '%'", filter)
+    .orWhereRaw("LOWER(description) LIKE '%' || LOWER(?) || '%'", filter)
+    .orWhereRaw("LOWER(area) LIKE '%' || LOWER(?) || '%'", filter)
+    .orWhereRaw("LOWER(subjects::text) LIKE '%' || LOWER(?) || '%'", filter);
   }
 
   return q;
