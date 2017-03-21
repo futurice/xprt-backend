@@ -31,7 +31,11 @@ fixtureFactory.register('user', {
   phone: 'phone.phoneNumber',
   // area: 'address.city',
   area: (fixtures, options, dataModel, faker) => {
-    return JSON.stringify([faker.address.country(), faker.address.country()]);
+    if (isExpert) {
+      return JSON.stringify([faker.address.country(), faker.address.country()]);
+    }
+
+    return undefined;
   },
 
   subjects: (fixtures, options, dataModel, faker) => {
