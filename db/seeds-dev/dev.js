@@ -29,7 +29,10 @@ fixtureFactory.register('user', {
   title: 'name.jobTitle',
   address: 'address.streetAddress',
   phone: 'phone.phoneNumber',
-  area: 'address.city',
+  // area: 'address.city',
+  area: (fixtures, options, dataModel, faker) => {
+    return JSON.stringify([faker.address.country(), faker.address.country()]);
+  },
 
   subjects: (fixtures, options, dataModel, faker) => {
     if (isExpert) {
