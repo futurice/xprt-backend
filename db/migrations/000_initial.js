@@ -20,7 +20,7 @@ exports.up = knex => (
       table.text('title');
       table.text('address');
       table.text('phone');
-      table.json('areas'); // school for teacher
+      table.json('area'); // school for teacher
 
       // experts
       table.json('subjects');
