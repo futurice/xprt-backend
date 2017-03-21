@@ -23,7 +23,7 @@ fixtureFactory.register('user', {
   locale: 'fi',
   description: 'lorem.sentence',
   imageUrl: (fixtures, options, dataModel, faker) => (
-    `${faker.image.imageUrl()}?${faker.random.number()}`
+    `${faker.image.imageUrl().replace(/^http/, 'https')}?${faker.random.number()}`
   ),
 
   title: 'name.jobTitle',
