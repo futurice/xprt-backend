@@ -4,6 +4,7 @@ const expertSummaryFields = [
   'id',
   'name',
   'email',
+  'description',
   'imageUrl',
   'area',
   'subjects',
@@ -28,7 +29,6 @@ export const dbGetExperts = (filter) => {
     .select(expertSummaryFields);
 
   if (filter) {
-    q = q.select(expertDetailedFields);
     q = q.whereRaw("LOWER(name) LIKE '%' || LOWER(?) || '%'", filter)
     .orWhereRaw("LOWER(title) LIKE '%' || LOWER(?) || '%'", filter)
     .orWhereRaw("LOWER(description) LIKE '%' || LOWER(?) || '%'", filter)
