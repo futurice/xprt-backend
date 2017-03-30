@@ -43,7 +43,7 @@ const users = [
   {
     method: 'GET',
     path: '/users/{userId}',
-    config: merge({}, validateUserId, getAuthWithScope('expert')),
+    config: merge({}, validateUserId, getAuthWithScope('user')),
     handler: getUser,
   },
 
@@ -51,7 +51,7 @@ const users = [
   {
     method: 'POST',
     path: '/users/{userId}',
-    config: merge({}, validateUserId, getAuthWithScope('expert')),
+    config: merge({}, validateUserId, getAuthWithScope('user')),
     handler: updateUser,
   },
 

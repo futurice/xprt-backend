@@ -3,18 +3,11 @@ const fixtureFactory = require('fixture-factory');
 // 'foobar'
 const dummyPassword = '$2a$10$jqtfUwulMw6xqGUA.IsjkuAooNkAjPT3FJ9rRiUoSTsUpNTD8McxC';
 
-const scopes = ['expert', 'teacher'];
-
-let isExpert = false;
 fixtureFactory.register('user', {
   id: 'random.number',
   createdAt: 'date.recent',
-  scope: () => {
-    const scope = scopes[Math.floor(Math.random() * scopes.length)];
-    isExpert = scope === 'expert';
+  scope: 'user',
 
-    return scope;
-  },
   name: (fixtures, options, dataModel, faker) => (
     `${faker.name.firstName()} ${faker.name.lastName()}`
   ),
@@ -22,6 +15,7 @@ fixtureFactory.register('user', {
   password: dummyPassword,
   locale: 'fi',
   description: 'lorem.sentence',
+
   imageUrl: (fixtures, options, dataModel, faker) => (
     `${faker.image.imageUrl().replace(/^http/, 'https')}?${faker.random.number()}`
   ),
@@ -29,21 +23,14 @@ fixtureFactory.register('user', {
   title: 'name.jobTitle',
   address: 'address.streetAddress',
   phone: 'phone.phoneNumber',
-  area: (fixtures, options, dataModel, faker) => {
-    if (isExpert) {
-      return JSON.stringify([faker.address.country(), faker.address.country()]);
-    }
 
-    return undefined;
-  },
+  area: (fixtures, options, dataModel, faker) => (
+    JSON.stringify([faker.address.country(), faker.address.country()])
+  ),
 
-  subjects: (fixtures, options, dataModel, faker) => {
-    if (isExpert) {
-      return JSON.stringify([faker.random.word(), faker.random.word(), faker.random.word()]);
-    }
-
-    return undefined;
-  },
+  subjects: (fixtures, options, dataModel, faker) => (
+    JSON.stringify([faker.random.word(), faker.random.word(), faker.random.word()])
+  ),
 });
 
 fixtureFactory.register('lecture', {
@@ -63,9 +50,11 @@ fixtureFactory.register('feedback', {
   id: 'random.number',
   createdAt: 'date.recent',
   text: 'lorem.sentences',
+
   creatorType: () => (
     Math.random() < 0.5 ? 'teacher' : 'expert'
   ),
+
   email: 'internet.email',
 });
 

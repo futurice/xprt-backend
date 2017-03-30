@@ -40,7 +40,7 @@ const feedback = [
   {
     method: 'POST',
     path: '/feedback',
-    config: getAuthWithScope('teacher'),
+    config: getAuthWithScope('user'),
     handler: createFeedback,
   },
 
