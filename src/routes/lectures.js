@@ -25,6 +25,7 @@ const lectures = [
   {
     method: 'GET',
     path: '/lectures',
+    config: getAuthWithScope('user'),
     handler: getLectures,
   },
 
