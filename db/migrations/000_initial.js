@@ -6,7 +6,7 @@ exports.up = knex => (
       // common fields
       table.increments('id').primary();
       table.timestamp('createdAt').defaultTo(knex.fn.now());
-      table.enum('scope', ['admin', 'expert', 'teacher']).notNullable();
+      table.enum('scope', ['admin', 'user']).notNullable();
       table.text('name').notNullable();
       table.text('email').notNullable().unique();
       table.text('password');
@@ -15,6 +15,9 @@ exports.up = knex => (
       table.text('description');
       table.binary('image');
       table.text('imageUrl');
+
+      table.bool('isExpert').defaultTo(false);
+      table.bool('isTeacher').defaultTo(false);
 
       // common for teachers, experts
       table.text('title');

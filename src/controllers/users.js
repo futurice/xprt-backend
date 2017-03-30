@@ -57,12 +57,12 @@ export const updateUser = async (request, reply) => {
 };
 
 export const authUser = (request, reply) => (
-  reply(createToken(request.pre.user.id, request.pre.user.email, 'expert'))
+  reply(createToken(request.pre.user.id, request.pre.user.email, request.pre.user.scope))
 );
 
 export const registerUser = (request, reply) => (
   hashPassword(request.payload.password)
-    .then(password => dbCreateUser({ ...request.payload, password, scope: 'expert' })
+    .then(password => dbCreateUser({ ...request.payload, password, scope: 'user' })
     .then(reply))
     .catch((err) => {
       if (err.constraint === 'users_email_unique') {

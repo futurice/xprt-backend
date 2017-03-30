@@ -40,7 +40,7 @@ const lectures = [
   {
     method: 'POST',
     path: '/lectures',
-    config: getAuthWithScope('teacher'),
+    config: getAuthWithScope('user'),
     handler: createLecture,
   },
 
@@ -48,7 +48,7 @@ const lectures = [
   {
     method: 'POST',
     path: '/lectures/{lectureId}',
-    config: merge({}, validateLectureId, getAuthWithScope('teacher')), // FIXME: expert access?
+    config: merge({}, validateLectureId, getAuthWithScope('user')), // FIXME: expert access?
     handler: updateLecture,
   },
 
@@ -56,7 +56,7 @@ const lectures = [
   {
     method: 'DELETE',
     path: '/lectures/{lectureId}',
-    config: merge({}, validateLectureId, getAuthWithScope('teacher')), // FIXME: expert access?
+    config: merge({}, validateLectureId, getAuthWithScope('user')), // FIXME: expert access?
     handler: delLecture,
   },
 ];
