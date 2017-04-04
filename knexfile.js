@@ -31,7 +31,7 @@ module.exports = {
     ...COMMON_ENV,
 
     seeds: {
-      directory: 'db/seeds-prod',
+      directory: 'db/seeds-dev', // TODO: change to -prod before final deployment
     },
   },
 };
