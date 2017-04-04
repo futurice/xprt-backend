@@ -6,10 +6,7 @@ import {
   dbDelLecture,
 } from '../models/lectures';
 
-export const getLectures = (request, reply) => {
-  console.log(request);
-  return dbGetLectures().then(reply);
-};
+export const getLectures = (request, reply) => dbGetLectures(request.pre.user.id).then(reply);
 
 export const getLecture = (request, reply) => dbGetLecture(request.params.lectureId).then(reply);
 export const createLecture = (request, reply) => dbCreateLecture(request.params).then(reply);
