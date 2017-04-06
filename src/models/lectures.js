@@ -22,9 +22,10 @@ export const dbUpdateLecture = (userId, lectureId, fields) => (
     .where({ teacherId: userId })
 );
 
-export const dbDelLecture = id => (
+export const dbDelLecture = (userId, lectureId) => (
   knex('lectures')
-    .where({ id })
+    .where({ id: lectureId })
+    .where({ teacherId: userId })
     .del()
 );
 
