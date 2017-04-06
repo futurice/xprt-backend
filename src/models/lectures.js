@@ -16,7 +16,6 @@ export const dbGetLecture = id => (
 );
 
 export const dbUpdateLecture = (userId, lectureId, fields) => (
-  console.log({fields}),
   knex('lectures')
     .update({ ...fields })
     .where({ id: lectureId })
