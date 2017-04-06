@@ -4,7 +4,6 @@ const fixtureFactory = require('fixture-factory');
 const dummyPassword = '$2a$10$jqtfUwulMw6xqGUA.IsjkuAooNkAjPT3FJ9rRiUoSTsUpNTD8McxC';
 
 fixtureFactory.register('user', {
-  id: 'random.number',
   createdAt: 'date.recent',
   scope: 'user',
 
@@ -33,8 +32,8 @@ fixtureFactory.register('user', {
   ),
 });
 
+
 fixtureFactory.register('lecture', {
-  id: 'random.number',
   createdAt: 'date.recent',
   title: 'lorem.words',
   description: 'lorem.sentence',
@@ -42,7 +41,7 @@ fixtureFactory.register('lecture', {
   teacherNote: 'lorem.sentence',
   expertNote: 'lorem.sentence',
   targetStudents: 'lorem.sentence',
-  teacherId: 'random.number',
+  teacherId: () => Math.floor(Math.random() * 10+1),
   area: 'address.city',
 });
 
