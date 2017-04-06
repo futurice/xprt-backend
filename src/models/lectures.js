@@ -15,10 +15,12 @@ export const dbGetLecture = id => (
     .where({ id })
 );
 
-export const dbUpdateLecture = (id, fields) => (
+export const dbUpdateLecture = (userId, lectureId, fields) => (
+  console.log({fields}),
   knex('lectures')
     .update({ ...fields })
-    .where({ id })
+    .where({ id: lectureId })
+    .where({ teacherId: userId })
 );
 
 export const dbDelLecture = id => (
