@@ -5,7 +5,7 @@ const dummyPassword = '$2a$10$jqtfUwulMw6xqGUA.IsjkuAooNkAjPT3FJ9rRiUoSTsUpNTD8M
 
 fixtureFactory.register('user', {
   id: 'random.number',
-  createdAt: 'date.recent',
+  created_at: 'date.recent',
   scope: 'user',
 
   name: (fixtures, options, dataModel, faker) => (
@@ -35,23 +35,23 @@ fixtureFactory.register('user', {
 
 fixtureFactory.register('lecture', {
   id: 'random.number',
-  createdAt: 'date.recent',
+  created_at: 'date.recent',
   title: 'lorem.words',
   description: 'lorem.sentence',
   dates: 'date.future',
-  teacherNote: 'lorem.sentence',
-  expertNote: 'lorem.sentence',
-  targetStudents: 'lorem.sentence',
-  teacherId: 'random.number',
+  teacher_note: 'lorem.sentence',
+  expert_note: 'lorem.sentence',
+  target_students: 'lorem.sentence',
+  teacher_id: 'random.number',
   area: 'address.city',
 });
 
 fixtureFactory.register('feedback', {
   id: 'random.number',
-  createdAt: 'date.recent',
+  created_at: 'date.recent',
   text: 'lorem.sentences',
 
-  creatorType: () => (
+  creator_type: () => (
     Math.random() < 0.5 ? 'teacher' : 'expert'
   ),
 

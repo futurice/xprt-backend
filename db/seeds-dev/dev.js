@@ -4,7 +4,7 @@ const fixtureFactory = require('fixture-factory');
 const dummyPassword = '$2a$10$jqtfUwulMw6xqGUA.IsjkuAooNkAjPT3FJ9rRiUoSTsUpNTD8McxC';
 
 fixtureFactory.register('user', {
-  createdAt: 'date.recent',
+  created_at: 'date.recent',
   scope: 'user',
 
   name: (fixtures, options, dataModel, faker) => (
@@ -15,7 +15,7 @@ fixtureFactory.register('user', {
   locale: 'fi',
   description: 'lorem.sentence',
 
-  imageUrl: (fixtures, options, dataModel, faker) => (
+  image_url: (fixtures, options, dataModel, faker) => (
     `${faker.image.imageUrl().replace(/^http/, 'https')}?${faker.random.number()}`
   ),
 
@@ -30,27 +30,30 @@ fixtureFactory.register('user', {
   subjects: (fixtures, options, dataModel, faker) => (
     JSON.stringify([faker.random.word(), faker.random.word(), faker.random.word()])
   ),
+
+  is_expert: () => Math.floor(Math.random() * 2),
+  is_teacher: () => Math.floor(Math.random() * 2),
 });
 
 
 fixtureFactory.register('lecture', {
-  createdAt: 'date.recent',
+  created_at: 'date.recent',
   title: 'lorem.words',
   description: 'lorem.sentence',
   dates: 'date.future',
-  teacherNote: 'lorem.sentence',
-  expertNote: 'lorem.sentence',
-  targetStudents: 'lorem.sentence',
-  teacherId: () => Math.floor(Math.random() * 10+1),
+  teacher_note: 'lorem.sentence',
+  expert_note: 'lorem.sentence',
+  target_students: 'lorem.sentence',
+  teacher_id: () => Math.floor(Math.random() * 10 + 1),
   area: 'address.city',
 });
 
 fixtureFactory.register('feedback', {
   id: 'random.number',
-  createdAt: 'date.recent',
+  created_at: 'date.recent',
   text: 'lorem.sentences',
 
-  creatorType: () => (
+  creator_type: () => (
     Math.random() < 0.5 ? 'teacher' : 'expert'
   ),
 

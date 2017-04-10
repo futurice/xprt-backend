@@ -5,7 +5,7 @@ const expertSummaryFields = [
   'name',
   'email',
   'description',
-  'imageUrl',
+  'image_url',
   'area',
   'subjects',
 ];
@@ -15,7 +15,7 @@ const expertDetailedFields = [
   'name',
   'email',
   'description',
-  'imageUrl',
+  'image_url',
   'title',
   'address',
   'phone',
@@ -24,10 +24,14 @@ const expertDetailedFields = [
 ];
 
 export const dbGetExperts = (filter) => {
+  /*
   let q = knex('users')
     .where({ scope: 'expert' })
     .select(expertSummaryFields);
-
+*/
+  let q = knex('users')
+    .where({ is_expert: 'true' })
+    .select(['id', 'name', 'email', 'description', 'is_expert']);
   if (filter) {
     q = q.whereRaw("LOWER(name) LIKE '%' || LOWER(?) || '%'", filter)
     .orWhereRaw("LOWER(title) LIKE '%' || LOWER(?) || '%'", filter)
@@ -42,5 +46,5 @@ export const dbGetExperts = (filter) => {
 export const dbGetExpert = id => (
   knex('users')
     .first(expertDetailedFields)
-    .where({ scope: 'expert', id })
+    .where({ is_expert: 'true', id })
 );

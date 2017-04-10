@@ -1,6 +1,6 @@
 import knex from '../utils/db';
 
-const lectureSummaryFields = ['id', 'createdAt', 'title', 'dates'];
+const lectureSummaryFields = ['id', 'created_at', 'title', 'dates'];
 const lectureDetailedFields = '*';
 
 export const dbGetLectures = userId => (

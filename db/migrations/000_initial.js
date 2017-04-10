@@ -5,19 +5,19 @@ exports.up = knex => (
     .createTableIfNotExists('users', (table) => {
       // common fields
       table.increments('id').primary();
-      table.timestamp('createdAt').defaultTo(knex.fn.now());
+      table.timestamp('created_at').defaultTo(knex.fn.now());
       table.enum('scope', ['admin', 'user']).notNullable();
       table.text('name').notNullable();
       table.text('email').notNullable().unique();
       table.text('password');
       table.text('locale').notNullable();
-      table.integer('oauth2Id');
+      table.integer('oauth2_id');
       table.text('description');
       table.binary('image');
-      table.text('imageUrl');
+      table.text('image_url');
 
-      table.bool('isExpert').defaultTo(false);
-      table.bool('isTeacher').defaultTo(false);
+      table.bool('is_expert').defaultTo(false);
+      table.bool('is_teacher').defaultTo(false);
 
       // common for teachers, experts
       table.text('title');
@@ -31,23 +31,23 @@ exports.up = knex => (
 
     .createTableIfNotExists('lectures', (table) => {
       table.increments('id').primary();
-      table.timestamp('createdAt').defaultTo(knex.fn.now());
+      table.timestamp('created_at').defaultTo(knex.fn.now());
       table.text('title').notNullable().unique();
       table.text('description').notNullable();
       table.text('dates').notNullable();
-      table.text('teacherNote').notNullable();
-      table.text('expertNote').notNullable();
-      table.text('targetStudents').notNullable();
-      table.text('expertId');
-      table.text('teacherId').notNullable();
+      table.text('teacher_note').notNullable();
+      table.text('expert_note').notNullable();
+      table.text('target_students').notNullable();
+      table.text('expert_id');
+      table.text('teacher_id').notNullable();
       table.text('area').notNullable();
     })
 
     .createTableIfNotExists('feedback', (table) => {
       table.increments('id').primary();
-      table.timestamp('createdAt').defaultTo(knex.fn.now());
+      table.timestamp('created_at').defaultTo(knex.fn.now());
       table.text('text').notNullable();
-      table.enum('creatorType', ['expert', 'teacher']).notNullable();
+      table.enum('creator_type', ['expert', 'teacher']).notNullable();
       table.text('email').notNullable();
     })
 );
