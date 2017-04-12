@@ -25,7 +25,7 @@ const expertDetailedFields = [
 
 export const dbGetExperts = (filter) => {
   let q = knex('users')
-    .where({ scope: 'expert' })
+    .where({ isExpert: 'true' })
     .select(expertSummaryFields);
 
   if (filter) {
@@ -42,5 +42,5 @@ export const dbGetExperts = (filter) => {
 export const dbGetExpert = id => (
   knex('users')
     .first(expertDetailedFields)
-    .where({ scope: 'expert', id })
+    .where({ isExpert: 'true', id })
 );
