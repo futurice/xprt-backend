@@ -30,6 +30,9 @@ fixtureFactory.register('user', {
   subjects: (fixtures, options, dataModel, faker) => (
     JSON.stringify([faker.random.word(), faker.random.word(), faker.random.word()])
   ),
+
+  isExpert: () => Math.floor(Math.random() * 2),
+  isTeacher: () => Math.floor(Math.random() * 2),
 });
 
 
