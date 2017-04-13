@@ -93,7 +93,7 @@ export const oauth2Authenticate = async (request, reply) => {
 
     if (!registeredUser) {
       registeredUser = await dbCreateUser({
-        scope: 'expert',
+        scope: 'user',
         name: `${oa2User.first_name} ${oa2User.last_name}`,
         email: oa2User.email,
         locale: oa2User.lang_name,
