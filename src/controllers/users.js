@@ -60,8 +60,16 @@ export const authUser = (request, reply) => (
   reply(createToken(request.pre.user.id, request.pre.user.email, request.pre.user.scope))
 );
 
-export const registerUser = (request, reply) => (
-  hashPassword(request.payload.password)
+export const registerUser = (request, reply) => {
+  if(request.payload.subjects) {
+    request.payload.subjects = JSON.stringify(request.payload.subjects);
+  }
+
+  if(request.payload.area) {
+    request.payload.area = JSON.stringify(request.payload.area);
+  }
+
+  return hashPassword(request.payload.password)
     .then(password => dbCreateUser({ ...request.payload, password, scope: 'user' })
     .then(reply))
     .catch((err) => {
@@ -71,7 +79,7 @@ export const registerUser = (request, reply) => (
         reply(Boom.badImplementation(err));
       }
     })
-);
+};
 
 export const oauth2Authenticate = async (request, reply) => {
   if (!request.auth.isAuthenticated) {
