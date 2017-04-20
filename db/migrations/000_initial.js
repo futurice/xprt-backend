@@ -20,6 +20,7 @@ exports.up = knex => (
       table.bool('isTeacher').defaultTo(false);
 
       // common for teachers, experts
+      table.text('company');
       table.text('title');
       table.text('address');
       table.text('phone');
