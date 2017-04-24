@@ -66,6 +66,8 @@ const testUser = {
 
   email: 'foo@bar.com',
   scope: 'admin',
+  isTeacher: true,
+  isExpert: true,
 };
 
 exports.seed = knex => (
