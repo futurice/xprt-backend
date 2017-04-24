@@ -42,6 +42,7 @@ exports.up = knex => (
         .integer('expertId')
         .references('id')
         .inTable('users')
+        .notNullable()
         .onDelete('SET NULL');
       table
         .integer('teacherId')
