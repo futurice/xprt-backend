@@ -46,7 +46,7 @@ export const dbDelLecture = (userId, lectureId) => (
 export const dbCreateLecture = (userId, fields) => (
   knex('lectures')
     .insert({ ...fields, teacherId: userId })
-    .returning(lectureDetailedFields)
+    .returning('*')
     .then(results => results[0])
     // return only first result
 );
