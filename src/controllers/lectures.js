@@ -17,7 +17,7 @@ export const createLecture = async (request, reply) => {
       request.payload,
     );
 
-    reply(lecture);
+    dbGetLecture(lecture.id).then(reply);
   } catch (e) {
     reply(Boom.badImplementation(e));
   }
@@ -31,7 +31,7 @@ export const updateLecture = async (request, reply) => {
       request.payload,
     );
 
-    reply(lecture);
+    dbGetLecture(lecture.id).then(reply);
   } catch (e) {
     reply(Boom.badImplementation(e));
   }
