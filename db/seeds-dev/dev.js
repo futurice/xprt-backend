@@ -45,6 +45,7 @@ fixtureFactory.register('lecture', {
   expertNote: 'lorem.sentence',
   targetStudents: 'lorem.sentence',
   teacherId: () => Math.floor(Math.random() * 10+1),
+  expertId: () => Math.floor(Math.random() * 10+1),
   contactByEmail: true,
   contactByPhone: true,
   area: 'address.city',
