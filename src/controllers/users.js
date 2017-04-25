@@ -23,6 +23,8 @@ export const getUser = (request, reply) => {
   return dbGetUser(request.params.userId).then(reply);
 };
 
+export const getMyUser = (request, reply) => dbGetUser(request.pre.user.id).then(reply);
+
 export const delUser = (request, reply) => {
   if (request.pre.user.scope !== 'admin' && request.pre.user.id !== request.params.userId) {
     return reply(Boom.unauthorized('Unprivileged users can only delete own userId!'));
