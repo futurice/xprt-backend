@@ -30,6 +30,9 @@ fixtureFactory.register('user', {
   subjects: (fixtures, options, dataModel, faker) => (
     JSON.stringify([faker.random.word(), faker.random.word(), faker.random.word()])
   ),
+
+  isExpert: () => Math.floor(Math.random() * 2),
+  isTeacher: () => Math.floor(Math.random() * 2),
 });
 
 
@@ -42,6 +45,9 @@ fixtureFactory.register('lecture', {
   expertNote: 'lorem.sentence',
   targetStudents: 'lorem.sentence',
   teacherId: () => Math.floor(Math.random() * 10+1),
+  expertId: () => Math.floor(Math.random() * 10+1),
+  contactByEmail: true,
+  contactByPhone: true,
   area: 'address.city',
 });
 
@@ -63,6 +69,8 @@ const testUser = {
 
   email: 'foo@bar.com',
   scope: 'admin',
+  isTeacher: true,
+  isExpert: true,
 };
 
 exports.seed = knex => (

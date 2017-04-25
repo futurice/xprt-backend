@@ -15,12 +15,12 @@ const teacherDetailedFields = [
 
 export const dbGetTeachers = () => (
   knex('users')
-    .where({ scope: 'teacher' })
+    .where({ isTeacher: 'true' })
     .select(teacherSummaryFields)
 );
 
 export const dbGetTeacher = id => (
   knex('users')
     .first(teacherDetailedFields)
-    .where({ scope: 'teacher', id })
+    .where({ isTeacher: 'true', id })
 );

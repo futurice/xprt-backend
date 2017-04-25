@@ -33,14 +33,26 @@ exports.up = knex => (
     .createTableIfNotExists('lectures', (table) => {
       table.increments('id').primary();
       table.timestamp('createdAt').defaultTo(knex.fn.now());
-      table.text('title').notNullable().unique();
+      table.text('title').notNullable();
       table.text('description').notNullable();
       table.text('dates').notNullable();
-      table.text('teacherNote').notNullable();
-      table.text('expertNote').notNullable();
+      table.text('teacherNote');
+      table.text('expertNote');
       table.text('targetStudents').notNullable();
-      table.text('expertId');
-      table.text('teacherId').notNullable();
+      table
+        .integer('expertId')
+        .references('id')
+        .inTable('users')
+        .notNullable()
+        .onDelete('SET NULL');
+      table
+        .integer('teacherId')
+        .references('id')
+        .inTable('users')
+        .notNullable()
+        .onDelete('CASCADE');
+      table.boolean('contactByEmail').notNullable();
+      table.boolean('contactByPhone').notNullable();
       table.text('area').notNullable();
     })
 

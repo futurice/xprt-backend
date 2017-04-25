@@ -1,6 +1,6 @@
 import knex from '../utils/db';
 
-const feedbackSummaryFields = ['id', 'createdAt', 'title', 'dates'];
+const feedbackSummaryFields = ['id', 'createdAt', 'text'];
 const feedbackDetailedFields = '*';
 
 export const dbGetAllFeedback = () => (

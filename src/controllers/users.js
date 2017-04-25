@@ -101,7 +101,7 @@ export const oauth2Authenticate = async (request, reply) => {
 
     if (!registeredUser) {
       registeredUser = await dbCreateUser({
-        scope: 'expert',
+        scope: 'user',
         name: `${oa2User.first_name} ${oa2User.last_name}`,
         email: oa2User.email,
         locale: oa2User.lang_name,
@@ -110,9 +110,20 @@ export const oauth2Authenticate = async (request, reply) => {
       });
     }
 
-    return reply(createToken(registeredUser.id, registeredUser.email, registeredUser.scope));
+    // Return token inside JS window.postMessage(), which sends the token outside a RN <WebView>
+    /* NOTE on this setInterval hack: https://github.com/facebook/react-native/issues/11594 */
+    return reply(`
+      <script type="text/javascript">
+        setInterval(function() {
+          window.postMessage(JSON.stringify(${JSON.stringify(
+            createToken(registeredUser.id, registeredUser.email, registeredUser.scope),
+          )}))},
+        1000);
+      </script>`,
+    );
   } catch (err) {
     if (err.constraint === 'users_email_unique') {
+      // TODO: what to do in this situation?
       return reply(Boom.conflict('Account already exists'));
     }
 
