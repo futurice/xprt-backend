@@ -3,6 +3,7 @@ import Joi from 'joi';
 
 import { getAuthWithScope, doAuth } from '../utils/auth';
 import {
+  getMyUser,
   getUsers,
   getUser,
   updateUser,
@@ -49,6 +50,12 @@ const users = [
     path: '/users',
     config: getAuthWithScope('admin'),
     handler: getUsers,
+  },
+  {
+    method: 'GET',
+    path: '/users/me',
+    config: merge({}, getAuthWithScope('user')),
+    handler: getMyUser,
   },
 
   // Get info about a specific user
