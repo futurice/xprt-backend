@@ -23,9 +23,21 @@ const validateUserId = {
 const validateRegistrationFields = {
   validate: {
     payload: {
+      name: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().required(),
+      locale: Joi.string().required(),
       oauth2Id: Joi.any().forbidden(), // Disallow setting oauth2Id
+      locale: Joi.string().optional(),
+      description: Joi.string().optional(),
+      isExpert: Joi.boolean().optional(),
+      isTeacher: Joi.boolean().optional(),
+      title: Joi.string().optional(),
+      address: Joi.string().optional(),
+      phone: Joi.string().optional(),
+      company: Joi.string().optional(),
+      subjects: Joi.array().optional(Joi.string()),
+      area: Joi.array().optional(Joi.string()),
     },
   },
 };
