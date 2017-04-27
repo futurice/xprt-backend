@@ -20,6 +20,8 @@ fixtureFactory.register('user', {
   ),
 
   title: 'name.jobTitle',
+  company: 'lorem.sentence',
+  details: 'lorem.sentence',
   address: 'address.streetAddress',
   phone: 'phone.phoneNumber',
 

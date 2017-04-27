@@ -31,6 +31,7 @@ const validateRegistrationFields = {
       oauth2Id: Joi.any().forbidden(), // Disallow setting oauth2Id
       locale: Joi.string().optional(),
       description: Joi.string().optional(),
+      details: Joi.string().optional(),
       isExpert: Joi.boolean().optional(),
       isTeacher: Joi.boolean().optional(),
       title: Joi.string().optional(),

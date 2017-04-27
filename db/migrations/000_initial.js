@@ -28,6 +28,7 @@ exports.up = knex => (
 
       // experts
       table.json('subjects');
+      table.text('details');
     })
 
     .createTableIfNotExists('lectures', (table) => {
