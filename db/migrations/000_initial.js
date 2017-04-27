@@ -70,6 +70,8 @@ exports.up = knex => (
       table.text('text').notNullable();
       table.enum('creatorType', ['expert', 'teacher']).notNullable();
       table.text('email').notNullable();
+      table.text('telephone');
+      table.text('type'); // Anonymoys feedback OR support request
     })
 );
 
