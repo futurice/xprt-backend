@@ -36,6 +36,13 @@ exports.up = knex => (
       table.timestamp('createdAt').defaultTo(knex.fn.now());
       table.text('title').notNullable();
       table.text('description').notNullable();
+      table.enum('status', [
+        'pending',
+        'accepted',
+        'rejected',
+        'completed',
+        'canceled',
+      ]).defaultTo('pending');
       table.text('dates').notNullable();
       table.text('teacherNote');
       table.text('expertNote');
