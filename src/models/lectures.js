@@ -5,6 +5,7 @@ const lectureSummaryFields = [
   'lectures.createdAt',
   'lectures.title',
   'lectures.dates',
+  'lectures.status',
   'users.name as expertName',
 ];
 const lectureDetailedFields = [

@@ -40,6 +40,13 @@ fixtureFactory.register('lecture', {
   createdAt: 'date.recent',
   title: 'lorem.words',
   description: 'lorem.sentence',
+  status: () => ([
+    'pending',
+    'accepted',
+    'rejected',
+    'completed',
+    'canceled',
+  ][Math.floor(Math.random() * 5)]),
   dates: 'date.future',
   teacherNote: 'lorem.sentence',
   expertNote: 'lorem.sentence',
