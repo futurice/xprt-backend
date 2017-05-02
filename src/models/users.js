@@ -1,6 +1,7 @@
 import knex from '../utils/db';
 
-const userSummaryFields = ['id', 'email'];
+const userSummaryFields = ['id', 'name', 'phone', 'company', 'title', 'email', 'description', 'details',
+'address', 'subjects', 'area', 'locale', 'scope', 'image', 'imageUrl'];
 const userDetailedFields = ['id', 'name', 'phone', 'company', 'title', 'email', 'description', 'details',
 'address', 'subjects', 'area', 'locale', 'scope', 'image', 'imageUrl'];
 
