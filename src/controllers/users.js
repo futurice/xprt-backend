@@ -11,6 +11,7 @@ import {
   dbGetOAuth2User,
   dbDelUser,
   dbUpdateUser,
+  dbUpdateMyUser,
   dbCreateUser,
 } from '../models/users';
 
@@ -31,6 +32,34 @@ export const delUser = (request, reply) => {
   }
 
   return dbDelUser(request.params.userId).then(reply);
+};
+
+export const updateMyUser = async (request, reply) => {
+
+  const fields = {
+    name: request.payload.name,
+    email: request.payload.email,
+    password: request.payload.password,
+    locale: request.payload.locale,
+    description: request.payload.description,
+    details: request.payload.details,
+    title: request.payload.title,
+    address: request.payload.address,
+    phone: request.payload.phone,
+    company: request.payload.company,
+    subjects: request.payload.subjects,
+    area: request.payload.area,
+    image: request.payload.image,
+
+  };
+
+  // If request contains an image, resize it to max 512x512 pixels
+  if (fields.image) {
+    const buf = Buffer.from(fields.image, 'base64');
+    await resizeImage(buf).then(resized => (fields.image = resized));
+  }
+
+  return dbUpdateMyUser(request.pre.user.id, fields).then(reply);
 };
 
 export const updateUser = async (request, reply) => {

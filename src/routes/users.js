@@ -7,6 +7,7 @@ import {
   getUsers,
   getUser,
   updateUser,
+  updateMyUser,
   delUser,
   authUser,
   registerUser,
@@ -68,6 +69,13 @@ const users = [
   },
 
   // Update user profile
+  {
+    method: 'POST',
+    path: '/users/me',
+    config: merge({}, getAuthWithScope('user')),
+    handler: updateMyUser,
+  },
+
   {
     method: 'POST',
     path: '/users/{userId}',
