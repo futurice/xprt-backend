@@ -28,6 +28,7 @@ const myLectureSummaryFields = [
   'users.company as school',
   'users.address as location',
 ];
+
 const lectureDetailedFields = [
   'lectures.*',
   'users.name as expertName',
