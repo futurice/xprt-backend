@@ -61,9 +61,7 @@ exports.up = knex => (
         .onDelete('CASCADE');
       table.boolean('contactByEmail').notNullable();
       table.boolean('contactByPhone').notNullable();
-      table.text('location').notNullable(); // area changed to location
-      table.text('school').notNullable(); // new attribute
-      table.text('subjects').notNullable(); // new attribute
+      table.text('location').notNullable();
     })
 
     .createTableIfNotExists('feedback', (table) => {

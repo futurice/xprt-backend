@@ -58,8 +58,6 @@ fixtureFactory.register('lecture', {
   contactByEmail: true,
   contactByPhone: true,
   location: 'address.city',
-  school: 'lorem.words',
-  subjects: 'lorem.words',
 });
 
 fixtureFactory.register('feedback', {
