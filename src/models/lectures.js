@@ -10,7 +10,11 @@ const lectureSummaryFields = [
   'lectures.statusDate',
   'lectures.edStage',
   'lectures.status',
+  'lectures.subjects',
   'users.name as expertName',
+  'users.email as email',
+  'users.phone as phone',
+
 ];
 const myLectureSummaryFields = [
   'lectures.id',
@@ -25,6 +29,7 @@ const myLectureSummaryFields = [
   'lectures.subjects',
   'users.name as name',
   'users.email as email',
+  'users.phone as phone',
   'users.company as school',
   'users.address as location',
 ];
