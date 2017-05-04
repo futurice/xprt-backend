@@ -1,6 +1,6 @@
 import knex from '../utils/db';
 
-const lectureSummaryFields = [
+const teacherLectureSummaryFields = [
   'lectures.id',
   'lectures.createdAt',
   'lectures.title',
@@ -16,7 +16,7 @@ const lectureSummaryFields = [
   'users.phone as phone',
 
 ];
-const myLectureSummaryFields = [
+const expertLectureSummaryFields = [
   'lectures.id',
   'lectures.createdAt as datesent',
   'lectures.title as lecturetheme',
@@ -42,16 +42,16 @@ const lectureDetailedFields = [
   'users.area as expertArea',
 ];
 
-export const dbGetLectures = userId => (
+export const dbGetTeacherLectures = userId => (
   knex('lectures')
-    .select(lectureSummaryFields)
+    .select(teacherLectureSummaryFields)
     .where({ teacherId: userId })
     .leftJoin('users', 'lectures.expertId', 'users.id')
 );
 
-export const dbGetMyLectures = userId => (
+export const dbGetExpertLectures = userId => (
   knex('lectures')
-    .select(myLectureSummaryFields)
+    .select(expertLectureSummaryFields)
     .where({ expertId: userId })
     .leftJoin('users', 'lectures.teacherId', 'users.id')
 );

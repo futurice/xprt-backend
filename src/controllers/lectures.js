@@ -1,15 +1,15 @@
 import Boom from 'boom';
 import {
-  dbGetLectures,
-  dbGetMyLectures,
+  dbGetTeacherLectures,
+  dbGetExpertLectures,
   dbGetLecture,
   dbCreateLecture,
   dbUpdateLecture,
   dbDelLecture,
 } from '../models/lectures';
 
-export const getLectures = (request, reply) => dbGetLectures(request.pre.user.id).then(reply);
-export const getMyLectures = (request, reply) => dbGetMyLectures(request.pre.user.id).then(reply);
+export const getTeacherLectures = (request, reply) => dbGetTeacherLectures(request.pre.user.id).then(reply);
+export const getExpertLectures = (request, reply) => dbGetExpertLectures(request.pre.user.id).then(reply);
 
 export const getLecture = (request, reply) => dbGetLecture(request.params.lectureId).then(reply);
 export const createLecture = async (request, reply) => {

@@ -4,8 +4,8 @@ import { merge } from 'lodash';
 import { getAuthWithScope } from '../utils/auth';
 
 import {
-  getLectures,
-  getMyLectures,
+  getTeacherLectures,
+  getExpertLectures,
   getLecture,
   createLecture,
   updateLecture,
@@ -25,15 +25,15 @@ const lectures = [
   // Get a list of all lectures
   {
     method: 'GET',
-    path: '/lectures',
+    path: '/teacher/lectures',
     config: getAuthWithScope('user'),
-    handler: getLectures,
+    handler: getTeacherLectures,
   },
   {
     method: 'GET',
-    path: '/lectures/me',
+    path: '/expert/lectures',
     config: merge({}, getAuthWithScope('user')),
-    handler: getMyLectures,
+    handler: getExpertLectures,
   },
 
   // Get more info about a specific lecture
