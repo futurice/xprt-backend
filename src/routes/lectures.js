@@ -6,6 +6,7 @@ import { getAuthWithScope } from '../utils/auth';
 import {
   getTeacherLectures,
   getExpertLectures,
+  getLectures,
   getLecture,
   createLecture,
   updateLecture,
@@ -23,6 +24,12 @@ const validateLectureId = {
 
 const lectures = [
   // Get a list of all lectures
+  {
+    method: 'GET',
+    path: '/lectures',
+    config: getAuthWithScope('user'),
+    handler: getLectures,
+  },
   {
     method: 'GET',
     path: '/teacher/lectures',

@@ -34,6 +34,25 @@ const expertLectureSummaryFields = [
   'users.address as location',
 ];
 
+const adminLectureSummaryFields = [
+  'lectures.id',
+  'lectures.createdAt as datesent',
+  'lectures.title as lecturetheme',
+  'lectures.description',
+  'lectures.dateOption1',
+  'lectures.dateOption2',
+  'lectures.statusDate',
+  'lectures.edStage as educationalstage',
+  'lectures.status',
+  'lectures.subjects',
+  'experts.name as ExpertName',
+  'experts.phone as ExpertPhone',
+  'experts.email as ExpertEmail',
+  'teachers.name as TeacherName',
+  'teachers.phone as TeacherPhone',
+  'teachers.email as TeacherEmail',
+];
+
 const lectureDetailedFields = [
   'lectures.*',
   'users.name as expertName',
@@ -54,6 +73,13 @@ export const dbGetExpertLectures = userId => (
     .select(expertLectureSummaryFields)
     .where({ expertId: userId })
     .leftJoin('users', 'lectures.teacherId', 'users.id')
+);
+
+export const dbGetLectures = () => (
+  knex('lectures')
+    .select(adminLectureSummaryFields)
+    .leftJoin('users as teachers', 'lectures.teacherId', 'teachers.id')
+    .leftJoin('users as experts', 'lectures.expertId', 'experts.id')
 );
 
 export const dbGetLecture = id => (
