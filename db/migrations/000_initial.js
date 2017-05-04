@@ -20,11 +20,11 @@ exports.up = knex => (
       table.bool('isTeacher').defaultTo(false);
 
       // common for teachers, experts
-      table.text('company');
+      table.text('company'); // school for teacher
       table.text('title');
       table.text('address');
       table.text('phone');
-      table.json('area'); // school for teacher
+      table.json('area');
 
       // experts
       table.json('subjects');
@@ -62,6 +62,7 @@ exports.up = knex => (
       table.boolean('contactByEmail').notNullable();
       table.boolean('contactByPhone').notNullable();
       table.text('location').notNullable();
+      table.json('subjects');
     })
 
     .createTableIfNotExists('feedback', (table) => {

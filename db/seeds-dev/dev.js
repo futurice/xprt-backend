@@ -58,6 +58,9 @@ fixtureFactory.register('lecture', {
   contactByEmail: true,
   contactByPhone: true,
   location: 'address.city',
+  subjects: (fixtures, options, dataModel, faker) => (
+    JSON.stringify([faker.random.word(), faker.random.word(), faker.random.word()])
+  ),
 });
 
 fixtureFactory.register('feedback', {
