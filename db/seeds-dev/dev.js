@@ -49,15 +49,19 @@ fixtureFactory.register('lecture', {
     'completed',
     'canceled',
   ][Math.floor(Math.random() * 5)]),
-  dates: 'date.future',
+  statusDate: 'date.recent',
+  dateOption1: 'date.future',
+  dateOption2: 'date.future',
   teacherNote: 'lorem.sentence',
   expertNote: 'lorem.sentence',
-  targetStudents: 'lorem.sentence',
+  edStage: 'lorem.sentence',
   teacherId: () => Math.floor(Math.random() * 10+1),
   expertId: () => Math.floor(Math.random() * 10+1),
   contactByEmail: true,
   contactByPhone: true,
-  area: 'address.city',
+  location: 'address.city',
+  school: 'lorem.words',
+  subjects: 'lorem.words',
 });
 
 fixtureFactory.register('feedback', {

@@ -43,10 +43,12 @@ exports.up = knex => (
         'completed',
         'canceled',
       ]).defaultTo('pending');
-      table.text('dates').notNullable();
+      table.timestamp('statusDate').notNullable(); // new attribute
+      table.timestamp('dateOption1').notNullable(); // dates changed to dateOption1
+      table.timestamp('dateOption2').notNullable(); // new attribute
       table.text('teacherNote');
       table.text('expertNote');
-      table.text('targetStudents').notNullable();
+      table.text('edStage').notNullable(); // targetStudents changed to edStage
       table
         .integer('expertId')
         .references('id')
@@ -61,7 +63,9 @@ exports.up = knex => (
         .onDelete('CASCADE');
       table.boolean('contactByEmail').notNullable();
       table.boolean('contactByPhone').notNullable();
-      table.text('area').notNullable();
+      table.text('location').notNullable(); // area changed to location
+      table.text('school').notNullable(); // new attribute
+      table.text('subjects').notNullable(); // new attribute
     })
 
     .createTableIfNotExists('feedback', (table) => {
