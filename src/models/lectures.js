@@ -4,7 +4,8 @@ const lectureSummaryFields = [
   'lectures.id',
   'lectures.createdAt',
   'lectures.title',
-  'lectures.dates',
+  'lectures.dateOption1',
+  'lectures.dateOption2',
   'lectures.status',
   'users.name as expertName',
 ];

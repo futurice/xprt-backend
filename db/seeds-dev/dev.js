@@ -46,8 +46,6 @@ fixtureFactory.register('lecture', {
     'pending',
     'accepted',
     'rejected',
-    'completed',
-    'canceled',
   ][Math.floor(Math.random() * 5)]),
   statusDate: 'date.recent',
   dateOption1: 'date.future',
