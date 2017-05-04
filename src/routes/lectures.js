@@ -5,6 +5,7 @@ import { getAuthWithScope } from '../utils/auth';
 
 import {
   getLectures,
+  getMyLectures,
   getLecture,
   createLecture,
   updateLecture,
@@ -27,6 +28,12 @@ const lectures = [
     path: '/lectures',
     config: getAuthWithScope('user'),
     handler: getLectures,
+  },
+  {
+    method: 'GET',
+    path: '/lectures/me',
+    config: merge({}, getAuthWithScope('user')),
+    handler: getMyLectures,
   },
 
   // Get more info about a specific lecture

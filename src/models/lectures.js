@@ -4,8 +4,11 @@ const lectureSummaryFields = [
   'lectures.id',
   'lectures.createdAt',
   'lectures.title',
+  'lectures.description',
   'lectures.dateOption1',
   'lectures.dateOption2',
+  'lectures.statusDate',
+  'lectures.edStage',
   'lectures.status',
   'users.name as expertName',
 ];
@@ -21,6 +24,13 @@ export const dbGetLectures = userId => (
   knex('lectures')
     .select(lectureSummaryFields)
     .where({ teacherId: userId })
+    .leftJoin('users', 'lectures.expertId', 'users.id')
+);
+
+export const dbGetMyLectures = userId => (
+  knex('lectures')
+    .select(lectureSummaryFields)
+    .where({ expertId: userId })
     .leftJoin('users', 'lectures.expertId', 'users.id')
 );
 
