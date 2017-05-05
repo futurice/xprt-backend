@@ -20,6 +20,8 @@ fixtureFactory.register('user', {
   ),
 
   title: 'name.jobTitle',
+  company: 'lorem.sentence',
+  details: 'lorem.sentence',
   address: 'address.streetAddress',
   phone: 'phone.phoneNumber',
 
@@ -44,18 +46,21 @@ fixtureFactory.register('lecture', {
     'pending',
     'accepted',
     'rejected',
-    'completed',
-    'canceled',
   ][Math.floor(Math.random() * 5)]),
-  dates: 'date.future',
+  statusDate: 'date.recent',
+  dateOption1: 'date.future',
+  dateOption2: 'date.future',
   teacherNote: 'lorem.sentence',
   expertNote: 'lorem.sentence',
-  targetStudents: 'lorem.sentence',
+  edStage: 'lorem.sentence',
   teacherId: () => Math.floor(Math.random() * 10+1),
   expertId: () => Math.floor(Math.random() * 10+1),
   contactByEmail: true,
   contactByPhone: true,
-  area: 'address.city',
+  location: 'address.city',
+  subjects: (fixtures, options, dataModel, faker) => (
+    JSON.stringify([faker.random.word(), faker.random.word(), faker.random.word()])
+  ),
 });
 
 fixtureFactory.register('feedback', {

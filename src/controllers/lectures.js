@@ -1,5 +1,7 @@
 import Boom from 'boom';
 import {
+  dbGetTeacherLectures,
+  dbGetExpertLectures,
   dbGetLectures,
   dbGetLecture,
   dbCreateLecture,
@@ -7,7 +9,15 @@ import {
   dbDelLecture,
 } from '../models/lectures';
 
-export const getLectures = (request, reply) => dbGetLectures(request.pre.user.id).then(reply);
+export const getTeacherLectures = (request, reply) => dbGetTeacherLectures(request.pre.user.id).then(reply);
+export const getExpertLectures = (request, reply) => dbGetExpertLectures(request.pre.user.id).then(reply);
+
+export const getLectures = (request, reply) => {
+  if (request.pre.user.scope !== 'admin') {
+    return reply(Boom.unauthorized('Unprivileged user!'));
+  }
+  dbGetLectures().then(reply);
+};
 
 export const getLecture = (request, reply) => dbGetLecture(request.params.lectureId).then(reply);
 export const createLecture = async (request, reply) => {

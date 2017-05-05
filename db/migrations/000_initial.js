@@ -20,14 +20,15 @@ exports.up = knex => (
       table.bool('isTeacher').defaultTo(false);
 
       // common for teachers, experts
-      table.text('company');
+      table.text('company'); // school for teacher
       table.text('title');
       table.text('address');
       table.text('phone');
-      table.json('area'); // school for teacher
+      table.json('area');
 
       // experts
       table.json('subjects');
+      table.text('details');
     })
 
     .createTableIfNotExists('lectures', (table) => {
@@ -39,13 +40,13 @@ exports.up = knex => (
         'pending',
         'accepted',
         'rejected',
-        'completed',
-        'canceled',
       ]).defaultTo('pending');
-      table.text('dates').notNullable();
+      table.timestamp('statusDate').notNullable(); // new attribute
+      table.timestamp('dateOption1').notNullable(); // dates changed to dateOption1
+      table.timestamp('dateOption2').notNullable(); // new attribute
       table.text('teacherNote');
       table.text('expertNote');
-      table.text('targetStudents').notNullable();
+      table.text('edStage').notNullable(); // targetStudents changed to edStage
       table
         .integer('expertId')
         .references('id')
@@ -60,7 +61,8 @@ exports.up = knex => (
         .onDelete('CASCADE');
       table.boolean('contactByEmail').notNullable();
       table.boolean('contactByPhone').notNullable();
-      table.text('area').notNullable();
+      table.text('location').notNullable();
+      table.json('subjects');
     })
 
     .createTableIfNotExists('feedback', (table) => {
@@ -69,6 +71,8 @@ exports.up = knex => (
       table.text('text').notNullable();
       table.enum('creatorType', ['expert', 'teacher']).notNullable();
       table.text('email').notNullable();
+      table.text('telephone');
+      table.text('type'); // Anonymoys feedback OR support request
     })
 );
 
