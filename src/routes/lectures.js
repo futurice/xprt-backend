@@ -43,7 +43,7 @@ const lectures = [
     config: merge({}, getAuthWithScope('user')),
     handler: getExpertLectures,
   },
-
+  
   // Get more info about a specific lecture
   {
     method: 'GET',

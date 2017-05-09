@@ -56,12 +56,15 @@ export const updateInvitation = async (request, reply) => {
   const user = await dbGetUser(
     request.pre.user.id,
   );
+  const lecture = await dbGetLecture(
+    request.params.lectureId,
+  );
 
   if (!user.isExpert) {
     return reply(Boom.forbidden('User is not an expert'));
   };
 
-  if (user.id !== request.params.lectureId) {
+  if (user.id !== lecture.expertId) {
     return reply(Boom.forbidden('Expert not invited to lecture'));
   };
 
