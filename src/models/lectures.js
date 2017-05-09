@@ -12,6 +12,7 @@ const teacherLectureSummaryFields = [
   'lectures.status',
   'lectures.subjects',
   'users.name as expertName',
+  'users.imageUrl as expertImageUrl',
   'users.email as email',
   'users.phone as phone',
 
@@ -28,6 +29,7 @@ const expertLectureSummaryFields = [
   'lectures.status',
   'lectures.subjects',
   'users.name as name',
+  'users.imageUrl as expertImageUrl',
   'users.email as email',
   'users.phone as phone',
   'users.company as school',
