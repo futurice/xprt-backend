@@ -15,6 +15,7 @@ exports.up = knex => (
       table.text('description');
       table.binary('image');
       table.text('imageUrl');
+      table.text('edStage');
 
       table.bool('isExpert').defaultTo(false);
       table.bool('isTeacher').defaultTo(false);

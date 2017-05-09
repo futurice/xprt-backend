@@ -24,6 +24,7 @@ fixtureFactory.register('user', {
   details: 'lorem.sentence',
   address: 'address.streetAddress',
   phone: 'phone.phoneNumber',
+  edStage: 'lorem.sentence',
 
   area: (fixtures, options, dataModel, faker) => (
     JSON.stringify([faker.address.country(), faker.address.country()])
