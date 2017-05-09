@@ -36,6 +36,7 @@ fixtureFactory.register('user', {
 
   isExpert: () => Math.floor(Math.random() * 2),
   isTeacher: () => Math.floor(Math.random() * 2),
+  officeVisit: () => Math.floor(Math.random() * 2),
 });
 
 
