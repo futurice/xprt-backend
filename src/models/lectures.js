@@ -53,6 +53,8 @@ const adminLectureSummaryFields = [
   'teachers.name as TeacherName',
   'teachers.phone as TeacherPhone',
   'teachers.email as TeacherEmail',
+  'teachers.address as TeacherAddress',
+  'teachers.company as TeacherSchool',
 ];
 
 const lectureDetailedFields = [
