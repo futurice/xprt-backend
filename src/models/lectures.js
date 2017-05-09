@@ -98,6 +98,8 @@ export const dbUpdateLecture = (userId, lectureId, fields) => (
     .update({ ...fields })
     .where({ id: lectureId })
     .where({ teacherId: userId })
+    .returning('*')
+    .then(results => results[0])
 );
 
 export const dbUpdateLectureExpert = (userId, lectureId, fields) => (
