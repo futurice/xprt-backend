@@ -24,6 +24,7 @@ fixtureFactory.register('user', {
   details: 'lorem.sentence',
   address: 'address.streetAddress',
   phone: 'phone.phoneNumber',
+  edStage: 'lorem.sentence',
 
   area: (fixtures, options, dataModel, faker) => (
     JSON.stringify([faker.address.country(), faker.address.country()])
@@ -35,6 +36,7 @@ fixtureFactory.register('user', {
 
   isExpert: () => Math.floor(Math.random() * 2),
   isTeacher: () => Math.floor(Math.random() * 2),
+  officeVisit: () => Math.floor(Math.random() * 2),
 });
 
 

@@ -7,10 +7,14 @@ const teacherDetailedFields = [
   'email',
   'description',
   'image',
+  'imageUrl',
   'title',
   'address',
   'phone',
   'area',
+  'subjects',
+  'company as school',
+  'edStage',
 ];
 
 export const dbGetTeachers = () => (

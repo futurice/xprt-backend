@@ -15,9 +15,11 @@ exports.up = knex => (
       table.text('description');
       table.binary('image');
       table.text('imageUrl');
+      table.text('edStage');
 
       table.bool('isExpert').defaultTo(false);
       table.bool('isTeacher').defaultTo(false);
+      table.bool('officeVisit');
 
       // common for teachers, experts
       table.text('company'); // school for teacher
@@ -40,6 +42,7 @@ exports.up = knex => (
         'pending',
         'accepted',
         'rejected',
+        'canceled',
       ]).defaultTo('pending');
       table.timestamp('statusDate').notNullable(); // new attribute
       table.timestamp('dateOption1').notNullable(); // dates changed to dateOption1

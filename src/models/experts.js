@@ -21,6 +21,7 @@ const expertDetailedFields = [
   'phone',
   'area',
   'subjects',
+  'company',
 ];
 
 export const dbGetExperts = (filter) => {
