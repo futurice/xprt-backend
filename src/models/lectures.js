@@ -53,6 +53,8 @@ const adminLectureSummaryFields = [
   'teachers.name as TeacherName',
   'teachers.phone as TeacherPhone',
   'teachers.email as TeacherEmail',
+  'teachers.address as TeacherAddress',
+  'teachers.company as TeacherSchool',
 ];
 
 const lectureDetailedFields = [
@@ -96,6 +98,13 @@ export const dbUpdateLecture = (userId, lectureId, fields) => (
     .update({ ...fields })
     .where({ id: lectureId })
     .where({ teacherId: userId })
+);
+
+export const dbUpdateLectureExpert = (userId, lectureId, fields) => (
+  knex('lectures')
+    .update({ ...fields })
+    .where({ id: lectureId })
+    .where({ expertId: userId })
 );
 
 export const dbDelLecture = (userId, lectureId) => (

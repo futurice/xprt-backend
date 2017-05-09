@@ -19,6 +19,7 @@ exports.up = knex => (
 
       table.bool('isExpert').defaultTo(false);
       table.bool('isTeacher').defaultTo(false);
+      table.bool('officeVisit');
 
       // common for teachers, experts
       table.text('company'); // school for teacher

@@ -39,7 +39,6 @@ export const updateMyUser = async (request, reply) => {
   const fields = {
     name: request.payload.name,
     email: request.payload.email,
-    password: request.payload.password,
     locale: request.payload.locale,
     description: request.payload.description,
     details: request.payload.details,
@@ -50,7 +49,7 @@ export const updateMyUser = async (request, reply) => {
     subjects: JSON.stringify(request.payload.subjects),
     area: request.payload.area,
     image: request.payload.image,
-
+    edStage: request.payload.edStage,
   };
 
   // If request contains an image, resize it to max 512x512 pixels
