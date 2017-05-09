@@ -47,7 +47,7 @@ export const updateMyUser = async (request, reply) => {
     address: request.payload.address,
     phone: request.payload.phone,
     company: request.payload.company,
-    subjects: request.payload.subjects,
+    subjects: JSON.stringify(request.payload.subjects),
     area: request.payload.area,
     image: request.payload.image,
 
