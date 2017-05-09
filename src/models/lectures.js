@@ -98,6 +98,13 @@ export const dbUpdateLecture = (userId, lectureId, fields) => (
     .where({ teacherId: userId })
 );
 
+export const dbUpdateLectureExpert = (userId, lectureId, fields) => (
+  knex('lectures')
+    .update({ ...fields })
+    .where({ id: lectureId })
+    .where({ expertId: userId })
+);
+
 export const dbDelLecture = (userId, lectureId) => (
   knex('lectures')
     .where({ id: lectureId })

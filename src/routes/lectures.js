@@ -11,6 +11,7 @@ import {
   createLecture,
   updateLecture,
   delLecture,
+  updateInvitation,
 } from '../controllers/lectures';
 
 const validateLectureId = {
@@ -50,7 +51,13 @@ const lectures = [
     config: validateLectureId,
     handler: getLecture,
   },
-
+  // Invitations
+  {
+    method: 'POST',
+    path: '/invitations/{lectureId}',
+    config: merge({}, validateLectureId, getAuthWithScope('user')),
+    handler: updateInvitation,
+  },
   // Create new lecture
   {
     method: 'POST',
