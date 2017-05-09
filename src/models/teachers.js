@@ -13,7 +13,7 @@ const teacherDetailedFields = [
   'phone',
   'area',
   'subjects',
-  'company as school',
+  'company',
   'edStage',
 ];
 
