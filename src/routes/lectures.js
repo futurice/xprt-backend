@@ -69,7 +69,7 @@ const lectures = [
   // Update a lecture
   {
     method: 'POST',
-    path: '/teacher/lectures/{lectureId}',
+    path: '/lectures/{lectureId}',
     config: merge({}, validateLectureId, getAuthWithScope('user')), // FIXME: expert access?
     handler: updateLecture,
   },
@@ -77,7 +77,7 @@ const lectures = [
   // Delete a lecture
   {
     method: 'DELETE',
-    path: '/teacher/lectures/{lectureId}',
+    path: '/lectures/{lectureId}',
     config: merge({}, validateLectureId, getAuthWithScope('user')), // FIXME: expert access?
     handler: delLecture,
   },
