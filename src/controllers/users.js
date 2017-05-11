@@ -67,9 +67,19 @@ export const updateUser = async (request, reply) => {
   }
 
   const fields = {
+    name: request.payload.name,
     email: request.payload.email,
+    locale: request.payload.locale,
     description: request.payload.description,
+    details: request.payload.details,
+    title: request.payload.title,
+    address: request.payload.address,
+    phone: request.payload.phone,
+    company: request.payload.company,
+    subjects: JSON.stringify(request.payload.subjects),
+    area: request.payload.area,
     image: request.payload.image,
+    edStage: request.payload.edStage,
   };
 
   // Only admins are allowed to modify user scope
