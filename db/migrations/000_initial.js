@@ -73,8 +73,9 @@ exports.up = knex => (
       table.timestamp('createdAt').defaultTo(knex.fn.now());
       table.text('text').notNullable();
       table.enum('creatorType', ['expert', 'teacher']).notNullable();
-      table.text('email').notNullable();
-      table.text('telephone');
+      table.text('email');
+      table.text('phone');
+      table.text('name');
       table.text('type'); // Anonymoys feedback OR support request
     })
 );
