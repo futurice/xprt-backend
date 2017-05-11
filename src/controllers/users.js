@@ -47,10 +47,12 @@ export const updateMyUser = async (request, reply) => {
     phone: request.payload.phone,
     company: request.payload.company,
     subjects: JSON.stringify(request.payload.subjects),
-    area: request.payload.area,
+    area: JSON.stringify(request.payload.area),
     image: request.payload.image,
     edStage: request.payload.edStage,
   };
+
+  console.log(fields);
 
   // If request contains an image, resize it to max 512x512 pixels
   if (fields.image) {
