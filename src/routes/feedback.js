@@ -19,6 +19,17 @@ const validateFeedbackId = {
   },
 };
 
+const validateFeedbackContent = {
+  validate: {
+    payload: {
+      text: Joi.string().required(),
+      creatorType: Joi.string(),
+      name: Joi.string(),
+      email: Joi.string(),
+      phone: Joi.string(),
+    },
+  },
+};
 
 const feedback = [
   // Get a list of all feedback
@@ -40,7 +51,7 @@ const feedback = [
   {
     method: 'POST',
     path: '/feedback',
-    config: getAuthWithScope('user'),
+    config: validateFeedbackContent,
     handler: createFeedback,
   },
 
@@ -48,7 +59,7 @@ const feedback = [
   {
     method: 'POST',
     path: '/feedback/{feedbackId}',
-    config: merge({}, validateFeedbackId, getAuthWithScope('teacher')), // FIXME: expert access?
+    config: merge({}, validateFeedbackId, getAuthWithScope('user')),
     handler: updateFeedback,
   },
 
@@ -56,7 +67,7 @@ const feedback = [
   {
     method: 'DELETE',
     path: '/feedback/{feedbackId}',
-    config: merge({}, validateFeedbackId, getAuthWithScope('teacher')), // FIXME: expert access?
+    config: merge({}, validateFeedbackId, getAuthWithScope('user')),
     handler: delFeedback,
   },
 ];

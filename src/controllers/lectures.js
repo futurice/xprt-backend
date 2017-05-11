@@ -28,7 +28,11 @@ export const createLecture = async (request, reply) => {
   try {
     const lecture = await dbCreateLecture(
       request.pre.user.id,
-      request.payload,
+      {
+        ...request.payload,
+        subjects: request.payload.subjects && JSON.stringify(request.payload.subjects),
+        statusDate: new Date(),
+      },
     );
 
     dbGetLecture(lecture.id).then(reply);

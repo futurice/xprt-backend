@@ -43,7 +43,7 @@ const lectures = [
     config: merge({}, getAuthWithScope('user')),
     handler: getExpertLectures,
   },
-  
+
   // Get more info about a specific lecture
   {
     method: 'GET',
@@ -61,7 +61,7 @@ const lectures = [
   // Create new lecture
   {
     method: 'POST',
-    path: '/lectures',
+    path: '/teacher/lectures',
     config: getAuthWithScope('user'),
     handler: createLecture,
   },
