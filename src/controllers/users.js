@@ -52,8 +52,6 @@ export const updateMyUser = async (request, reply) => {
     edStage: request.payload.edStage,
   };
 
-  console.log(fields);
-
   // If request contains an image, resize it to max 512x512 pixels
   if (fields.image) {
     const buf = Buffer.from(fields.image, 'base64');

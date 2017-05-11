@@ -79,7 +79,7 @@ const users = [
   {
     method: 'POST',
     path: '/users/{userId}',
-    config: merge({}, validateUserId, getAuthWithScope('user')),
+    config: merge({}, validateUserId, getAuthWithScope('admin')),
     handler: updateUser,
   },
 
