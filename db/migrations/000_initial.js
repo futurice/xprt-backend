@@ -46,7 +46,7 @@ exports.up = knex => (
       ]).defaultTo('pending');
       table.timestamp('statusDate').notNullable(); // new attribute
       table.timestamp('dateOption1').notNullable(); // dates changed to dateOption1
-      table.timestamp('dateOption2').notNullable(); // new attribute
+      table.timestamp('dateOption2'); // new attribute
       table.text('teacherNote');
       table.text('expertNote');
       table.text('edStage').notNullable(); // targetStudents changed to edStage
