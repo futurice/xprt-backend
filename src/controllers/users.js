@@ -2,6 +2,7 @@ import Boom from 'boom';
 import rp from 'request-promise';
 
 import config from '../utils/config';
+import sendMail from '../utils/email';
 
 import { resizeImage } from '../utils/image';
 import { createToken, hashPassword } from '../utils/auth';
@@ -47,7 +48,7 @@ export const updateMyUser = async (request, reply) => {
     phone: request.payload.phone,
     company: request.payload.company,
     subjects: JSON.stringify(request.payload.subjects),
-    area: request.payload.area,
+    area: JSON.stringify(request.payload.area),
     image: request.payload.image,
     edStage: request.payload.edStage,
   };
@@ -67,9 +68,19 @@ export const updateUser = async (request, reply) => {
   }
 
   const fields = {
+    name: request.payload.name,
     email: request.payload.email,
+    locale: request.payload.locale,
     description: request.payload.description,
+    details: request.payload.details,
+    title: request.payload.title,
+    address: request.payload.address,
+    phone: request.payload.phone,
+    company: request.payload.company,
+    subjects: JSON.stringify(request.payload.subjects),
+    area: JSON.stringify(request.payload.area),
     image: request.payload.image,
+    edStage: request.payload.edStage,
   };
 
   // Only admins are allowed to modify user scope
@@ -101,7 +112,7 @@ export const registerUser = (request, reply) => {
 
   return hashPassword(request.payload.password)
     .then(password => dbCreateUser({ ...request.payload, password, scope: 'user' })
-    .then(reply))
+    .then(sendMail(request.payload.email, "Welcome to XPRT", "Account created"), reply))
     .catch((err) => {
       if (err.constraint === 'users_email_unique') {
         reply(Boom.conflict('Account already exists'));
