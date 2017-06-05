@@ -36,7 +36,6 @@ export const delUser = (request, reply) => {
 };
 
 export const updateMyUser = async (request, reply) => {
-
   const fields = {
     name: request.payload.name,
     email: request.payload.email,
@@ -47,6 +46,7 @@ export const updateMyUser = async (request, reply) => {
     address: request.payload.address,
     phone: request.payload.phone,
     company: request.payload.company,
+    officeVisit: request.payload.officeVisit,
     subjects: JSON.stringify(request.payload.subjects),
     area: JSON.stringify(request.payload.area),
     image: request.payload.image,
