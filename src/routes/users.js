@@ -27,10 +27,9 @@ const validateRegistrationFields = {
     payload: {
       name: Joi.string().required(),
       email: Joi.string().email().required(),
-      password: Joi.string().required(),
       locale: Joi.string().required(),
+      password: Joi.string().required(),
       oauth2Id: Joi.any().forbidden(), // Disallow setting oauth2Id
-      locale: Joi.string().optional(),
       description: Joi.string().optional(),
       details: Joi.string().optional(),
       isExpert: Joi.boolean().optional(),

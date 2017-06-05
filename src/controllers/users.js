@@ -111,8 +111,9 @@ export const registerUser = (request, reply) => {
   }
 
   return hashPassword(request.payload.password)
-    .then(password => dbCreateUser({ ...request.payload, password, scope: 'user' })
-    .then(sendMail(request.payload.email, "Welcome to XPRT", "Account created"), reply))
+    .then(password => dbCreateUser({ ...request.payload, password, scope: 'user' }))
+    .then(user => reply(createToken(user.id, user.email, 'user')))
+    .then(sendMail(request.payload.email, "Welcome to XPRT", "Account created"))
     .catch((err) => {
       if (err.constraint === 'users_email_unique') {
         reply(Boom.conflict('Account already exists'));
