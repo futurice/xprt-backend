@@ -53,7 +53,7 @@ const lectures = [
   },
   // Invitations
   {
-    method: 'POST',
+    method: 'PATCH',
     path: '/invitations/{lectureId}',
     config: merge({}, validateLectureId, getAuthWithScope('user')),
     handler: updateInvitation,
@@ -68,7 +68,7 @@ const lectures = [
 
   // Update a lecture
   {
-    method: 'POST',
+    method: 'PATCH',
     path: '/lectures/{lectureId}',
     config: merge({}, validateLectureId, getAuthWithScope('user')), // FIXME: expert access?
     handler: updateLecture,

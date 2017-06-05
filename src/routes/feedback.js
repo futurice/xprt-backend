@@ -57,7 +57,7 @@ const feedback = [
 
   // Update feedback
   {
-    method: 'POST',
+    method: 'PATCH',
     path: '/feedback/{feedbackId}',
     config: merge({}, validateFeedbackId, getAuthWithScope('user')),
     handler: updateFeedback,

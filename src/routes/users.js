@@ -69,14 +69,14 @@ const users = [
 
   // Update user profile
   {
-    method: 'POST',
+    method: 'PATCH',
     path: '/users/me',
     config: merge({}, getAuthWithScope('user')),
     handler: updateMyUser,
   },
 
   {
-    method: 'POST',
+    method: 'PATCH',
     path: '/users/{userId}',
     config: merge({}, validateUserId, getAuthWithScope('admin')),
     handler: updateUser,
