@@ -103,25 +103,30 @@ export const authUser = (request, reply) => (
 );
 
 export const registerUser = (request, reply) => {
-  if(request.payload.subjects) {
+  if (request.payload.subjects) {
     request.payload.subjects = JSON.stringify(request.payload.subjects);
   }
 
-  if(request.payload.area) {
+  if (request.payload.area) {
     request.payload.area = JSON.stringify(request.payload.area);
   }
 
   return hashPassword(request.payload.password)
-    .then(password => dbCreateUser({ ...request.payload, password, scope: 'user' }))
+    .then(passwordHash => dbCreateUser({
+      ...request.payload,
+      password: passwordHash,
+      scope: 'user',
+    }))
     .then(user => reply(createToken(user.id, user.email, 'user')))
-    .then(sendMail(request.payload.email, "Welcome to XPRT", "Account created"))
+    .then(sendMail(request.payload.email, 'Welcome to XPRT', 'Account created'))
+    .then(reply)
     .catch((err) => {
       if (err.constraint === 'users_email_unique') {
         reply(Boom.conflict('Account already exists'));
       } else {
         reply(Boom.badImplementation(err));
       }
-    })
+    });
 };
 
 export const oauth2Authenticate = async (request, reply) => {
