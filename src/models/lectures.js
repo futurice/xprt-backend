@@ -1,4 +1,4 @@
-import knex from '../utils/db';
+import knex, { likeFilter } from '../utils/db';
 
 const teacherLectureSummaryFields = [
   'lectures.id',
@@ -79,11 +79,13 @@ export const dbGetExpertLectures = userId => (
     .leftJoin('users', 'lectures.teacherId', 'users.id')
 );
 
-export const dbGetLectures = () => (
+export const dbGetLectures = filters => (
+  console.log(filters) || 
   knex('lectures')
     .select(adminLectureSummaryFields)
     .leftJoin('users as teachers', 'lectures.teacherId', 'teachers.id')
     .leftJoin('users as experts', 'lectures.expertId', 'experts.id')
+    .where(likeFilter(filters))
 );
 
 export const dbGetLecture = id => (

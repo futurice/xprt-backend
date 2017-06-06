@@ -1,4 +1,4 @@
-import knex from '../utils/db';
+import knex, { likeFilter } from '../utils/db';
 
 const expertSummaryFields = [
   'id',
@@ -24,21 +24,18 @@ const expertDetailedFields = [
   'company',
 ];
 
-export const dbGetExperts = (filter) => {
-  let q = knex('users')
+export const dbGetExperts = filter => (
+  knex('users')
+    .select(expertSummaryFields)
     .where({ isExpert: 'true' })
-    .select(expertSummaryFields);
-
-  if (filter) {
-    q = q.whereRaw("LOWER(name) LIKE '%' || LOWER(?) || '%'", filter)
-    .orWhereRaw("LOWER(title) LIKE '%' || LOWER(?) || '%'", filter)
-    .orWhereRaw("LOWER(description) LIKE '%' || LOWER(?) || '%'", filter)
-    .orWhereRaw("LOWER(area::text) LIKE '%' || LOWER(?) || '%'", filter)
-    .orWhereRaw("LOWER(subjects::text) LIKE '%' || LOWER(?) || '%'", filter);
-  }
-
-  return q;
-};
+    .andWhere(likeFilter({
+      name: filter,
+      title: filter,
+      description: filter,
+      'area::text': filter,
+      'subjects::text': filter,
+    }, true))
+);
 
 export const dbGetExpert = id => (
   knex('users')

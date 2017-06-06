@@ -1,4 +1,4 @@
-import knex from '../utils/db';
+import knex, { likeFilter } from '../utils/db';
 
 const userSummaryFields = ['id', 'name', 'phone', 'company', 'title', 'email', 'description', 'details',
 'address', 'subjects', 'area', 'locale', 'scope', 'image', 'imageUrl','isExpert','isTeacher','edStage',
@@ -7,9 +7,10 @@ const userDetailedFields = ['id', 'name', 'phone', 'company', 'title', 'email', 
 'address', 'subjects', 'area', 'locale', 'scope', 'image', 'imageUrl','edStage', 'isExpert', 'isTeacher',
 'officeVisit'];
 
-export const dbGetUsers = () => (
+export const dbGetUsers = filters => (
   knex('users')
     .select(userSummaryFields)
+    .where(likeFilter(filters))
 );
 
 export const dbGetUser = id => (

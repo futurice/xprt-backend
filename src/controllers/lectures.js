@@ -20,7 +20,11 @@ export const getLectures = (request, reply) => {
   if (request.pre.user.scope !== 'admin') {
     return reply(Boom.unauthorized('Unprivileged user!'));
   }
-  dbGetLectures().then(reply);
+  dbGetLectures(request.query.filter)
+    .then(reply)
+    .catch((err) => {
+      reply(Boom.badImplementation(err));
+    });
 };
 
 export const getLecture = (request, reply) => dbGetLecture(request.params.lectureId).then(reply);
