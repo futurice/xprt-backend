@@ -29,6 +29,8 @@ export default Glue.compose({
   }, {
     plugin: 'bell',
   }, {
+    plugin: 'hapi-qs',
+  }, {
     plugin: {
       register: 'good',
       options: goodOptions,
