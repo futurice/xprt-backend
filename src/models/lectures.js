@@ -80,7 +80,6 @@ export const dbGetExpertLectures = userId => (
 );
 
 export const dbGetLectures = filters => (
-  console.log(filters) || 
   knex('lectures')
     .select(adminLectureSummaryFields)
     .leftJoin('users as teachers', 'lectures.teacherId', 'teachers.id')

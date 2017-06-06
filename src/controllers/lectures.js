@@ -87,10 +87,6 @@ export const updateInvitation = async (request, reply) => {
       fields,
     );
 
-    console.log(request.pre.user.id,
-          request.params.lectureId,
-          fields,);
-
     dbGetLecture(request.params.lectureId).then(reply);
   } catch (e) {
     reply(Boom.badImplementation(e));
