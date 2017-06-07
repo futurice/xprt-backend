@@ -110,7 +110,7 @@ export const updateUser = async (request, reply) => {
     await resizeImage(buf).then(resized => (fields.image = resized));
 
     // Set imageUrl to point to backend
-    fields.imageUrl = `${config.backendDomain}/users/profile/${request.pre.user.id}.png`;
+    fields.imageUrl = `${config.backendUrl}/users/profile/${request.pre.user.id}.png`;
   }
 
   return dbUpdateUser(request.params.userId, fields).then(reply);

@@ -1,5 +1,7 @@
 import knex, { likeFilter } from '../utils/db';
 
+import config from '../utils/config';
+
 const userSummaryFields = ['id', 'name', 'phone', 'company', 'title', 'email', 'description', 'details',
 'address', 'subjects', 'area', 'locale', 'scope', 'imageUrl','isExpert','isTeacher','edStage',
 'officeVisit'];
@@ -55,6 +57,16 @@ export const dbCreateUser = ({ password, ...fields }) => (
         ownerId: user.id,
         password,
       });
+
+    if (!fields.imageUrl) {
+      await trx('users')
+        .update({
+          imageUrl: `${config.backendUrl}/users/profile/${user.id}.png`,
+        })
+        .where({ id: user.id });
+
+      user.imageUrl = `${config.backendUrl}/users/profile/${user.id}.png`;
+    }
 
     return user;
   })

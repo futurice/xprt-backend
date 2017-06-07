@@ -98,7 +98,7 @@ export const updateLecture = async (request, reply) => {
           text: `Teacher '${user.name}' has modified your lecture invitation` +
                 // TODO: more user friendly
                 `Changed fields: ${JSON.stringify(diffKeys, null, 4)}\n\n` +
-                `Manage your invitations at ${config.frontendDomain}/profile`,
+                `Manage your invitations at ${config.frontendUrl}/profile`,
         });
       })
       .catch(err => console.log('Error while sending lecture change e-mail', err));
@@ -151,7 +151,7 @@ export const changeInvitationStatus = async (request, reply) => {
           to: teacher.email,
           subject: `Lecture invitation ${updatedLecture.status} by ${user.name}`,
           text: `${user.name} has ${changedStatus} your lecture invitation.\n\n` +
-                `Manage your invitations at ${config.frontendDomain}/profile`
+                `Manage your invitations at ${config.frontendUrl}/profile`
           ,
         });
       })

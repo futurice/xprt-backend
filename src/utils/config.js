@@ -46,8 +46,8 @@ module.exports = Object.freeze({
     host: env.HOST || '0.0.0.0',
     port: env.PORT || 3888,
   },
-  frontendDomain: env.FRONTEND_DOMAIN || 'https://localhost:8080',
-  backendDomain: env.BACKEND_DOMAIN || 'https://localhost:3888',
+  frontendUrl: env.FRONTEND_URL || 'http://localhost:8080',
+  backendUrl: env.BACKEND_URL || 'http://localhost:3888',
   adminEmail: env.ADMIN_EMAIL_TO || 'admin@hundred.org',
   db: {
     debug: false, // Toggle db debugging
