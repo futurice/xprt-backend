@@ -33,8 +33,6 @@ export const getProfilePicture = (request, reply) => dbGetUser(request.params.us
   .then((user) => {
     if (!user) {
       reply(Boom.notFound());
-    } else if (user.imageUrl) {
-      reply.redirect(user.imageUrl);
     } else if (user.image) {
       reply(user.image);
     } else {
