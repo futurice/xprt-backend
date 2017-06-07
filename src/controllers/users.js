@@ -1,6 +1,8 @@
 import Boom from 'boom';
 import rp from 'request-promise';
 
+import fs from 'fs';
+import { join } from 'path';
 import config from '../utils/config';
 import sendMail from '../utils/email';
 
@@ -16,6 +18,8 @@ import {
   dbCreateUser,
 } from '../models/users';
 
+const unknown = fs.readFileSync(join(__dirname, '..', 'assets', 'unknown.png'));
+
 export const getUsers = (request, reply) => dbGetUsers(request.query.filter).then(reply);
 export const getUser = (request, reply) => {
   if (request.pre.user.scope !== 'admin' && request.pre.user.id !== request.params.userId) {
@@ -24,6 +28,19 @@ export const getUser = (request, reply) => {
 
   return dbGetUser(request.params.userId).then(reply);
 };
+
+export const getProfilePicture = (request, reply) => dbGetUser(request.params.userId)
+  .then((user) => {
+    if (!user) {
+      reply(Boom.notFound());
+    } else if (user.imageUrl) {
+      reply.redirect(user.imageUrl);
+    } else if (user.image) {
+      reply(user.image);
+    } else {
+      reply(unknown);
+    }
+  });
 
 export const getMyUser = (request, reply) => dbGetUser(request.pre.user.id).then(reply);
 

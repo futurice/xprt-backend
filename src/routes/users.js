@@ -6,6 +6,7 @@ import {
   getMyUser,
   getUsers,
   getUser,
+  getProfilePicture,
   updateUser,
   updateMyUser,
   delUser,
@@ -55,8 +56,14 @@ const users = [
   {
     method: 'GET',
     path: '/users/me',
-    config: merge({}, getAuthWithScope('user')),
+    config: getAuthWithScope('user'),
     handler: getMyUser,
+  },
+  {
+    method: 'GET',
+    path: '/users/profile/{userId}.png',
+    // config: getAuthWithScope('user'), // TODO: require authentication?
+    handler: getProfilePicture,
   },
 
   // Get info about a specific user
@@ -71,7 +78,7 @@ const users = [
   {
     method: 'PATCH',
     path: '/users/me',
-    config: merge({}, getAuthWithScope('user')),
+    config: getAuthWithScope('user'),
     handler: updateMyUser,
   },
 
