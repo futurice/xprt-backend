@@ -7,6 +7,9 @@ import {
   dbDelFeedback,
 } from '../models/feedback';
 
+import sendMail from '../utils/email';
+import config from '../utils/config';
+
 /*
 import {
   dbGetUser,
@@ -42,14 +45,21 @@ export const createFeedback = async (request, reply) => {
       creatorType,
     });
 
-    return reply({
+    const { text, ...metadata } = request.payload;
+
+    reply({
       message: 'Thank you for sending feedback to XPRT.',
+    });
+
+    return sendMail({
+      to: config.adminEmail,
+      subject: 'XPRT app feedback',
+      text: `Feedback text: '${text}'\n` +
+            `Metadata: ${JSON.stringify(metadata, null, 4)}`,
     });
   } catch (e) {
     return reply(Boom.badImplementation(e));
   }
 };
 
-// TODO: make sure user "owns" feedback (i.e. either expertId or teacherId matches userId)
-export const updateFeedback = (request, reply) => dbUpdateFeedback(request.params).then(reply);
 export const delFeedback = (request, reply) => dbDelFeedback(request.params.feedbackId).then(reply);

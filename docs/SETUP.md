@@ -78,7 +78,27 @@ OAUTH2_CLIENT_ID=[client-id]
 OAUTH2_CLIENT_SECRET=[client-secret]
 OAUTH2_HOST=https://example.com/oauth/authorize
 OAUTH2_TOKEN_HOST=https://example.com/oauth/token
+
+# Endpoint which we can fetch user data from once authenticated
 OAUTH2_USER_ENDPOINT=https://example.com/api/v1/me.json
+```
+
+### Email config parameters
+
+Required to support sending email:
+
+```
+# SMTP server connection details
+SMTP_HOST=smtp.example.com
+SMTP_USER=admin
+SMTP_PASSWORD=foobar
+SMTP_TLS=true
+
+# Admin recepient email (e.g. feedback sent here)
+ADMIN_EMAIL_TO=example@example.com
+
+# Root of Web frontend (for links in emails)
+WWW_DOMAIN=https://xprt.example.com
 ```
 
 ## Run backend

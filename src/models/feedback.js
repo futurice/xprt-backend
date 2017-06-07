@@ -14,12 +14,6 @@ export const dbGetFeedback = id => (
     .where({ id })
 );
 
-export const dbUpdateFeedback = (id, fields) => (
-  knex('feedback')
-    .update({ ...fields })
-    .where({ id })
-);
-
 export const dbDelFeedback = id => (
   knex('feedback')
     .where({ id })

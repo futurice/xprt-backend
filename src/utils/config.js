@@ -15,6 +15,12 @@ const requiredEnvironmentVariables = [
   'OAUTH2_HOST',
   'OAUTH2_TOKEN_HOST',
   'OAUTH2_USER_ENDPOINT',
+  'SMTP_HOST',
+  'SMTP_USER',
+  'SMTP_PASSWORD',
+  'SMTP_TLS',
+  'WWW_DOMAIN',
+  'ADMIN_EMAIL_TO',
 ];
 
 if (env.NODE_ENV && (env.NODE_ENV !== 'development' && env.NODE_ENV !== 'test')) {
@@ -39,6 +45,8 @@ module.exports = Object.freeze({
     host: env.HOST || '0.0.0.0',
     port: env.PORT || 3888,
   },
+  wwwDomain: env.WWW_DOMAIN || 'https://localhost:8080',
+  adminEmail: env.ADMIN_EMAIL_TO || 'admin@hundred.org',
   db: {
     debug: false, // Toggle db debugging
     client: 'pg',
@@ -57,6 +65,12 @@ module.exports = Object.freeze({
       algorithms: ['HS256'],
       expiresIn: '24h',
     },
+  },
+  smtp: {
+    host: env.SMTP_HOST,
+    user: env.SMTP_USER,
+    password: env.SMTP_PASSWORD,
+    tls: env.SMTP_TLS === 'true',
   },
   oauth2: {
     userEndpoint: env.OAUTH2_USER_ENDPOINT,

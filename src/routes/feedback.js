@@ -55,14 +55,6 @@ const feedback = [
     handler: createFeedback,
   },
 
-  // Update feedback
-  {
-    method: 'PATCH',
-    path: '/feedback/{feedbackId}',
-    config: merge({}, validateFeedbackId, getAuthWithScope('user')),
-    handler: updateFeedback,
-  },
-
   // Delete feedback
   {
     method: 'DELETE',

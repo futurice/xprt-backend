@@ -11,7 +11,7 @@ import {
   createLecture,
   updateLecture,
   delLecture,
-  updateInvitation,
+  changeInvitationStatus,
 } from '../controllers/lectures';
 
 const validateLectureId = {
@@ -56,7 +56,7 @@ const lectures = [
     method: 'PATCH',
     path: '/invitations/{lectureId}',
     config: merge({}, validateLectureId, getAuthWithScope('user')),
-    handler: updateInvitation,
+    handler: changeInvitationStatus,
   },
   // Create new lecture
   {
