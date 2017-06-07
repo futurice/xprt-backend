@@ -19,7 +19,8 @@ const requiredEnvironmentVariables = [
   'SMTP_USER',
   'SMTP_PASSWORD',
   'SMTP_TLS',
-  'WWW_DOMAIN',
+  'BACKEND_DOMAIN',
+  'FRONTEND_DOMAIN',
   'ADMIN_EMAIL_TO',
 ];
 
@@ -45,7 +46,8 @@ module.exports = Object.freeze({
     host: env.HOST || '0.0.0.0',
     port: env.PORT || 3888,
   },
-  wwwDomain: env.WWW_DOMAIN || 'https://localhost:8080',
+  frontendDomain: env.FRONTEND_DOMAIN || 'https://localhost:8080',
+  backendDomain: env.BACKEND_DOMAIN || 'https://localhost:3888',
   adminEmail: env.ADMIN_EMAIL_TO || 'admin@hundred.org',
   db: {
     debug: false, // Toggle db debugging
