@@ -12,7 +12,7 @@ const userDetailedFields = ['id', 'name', 'phone', 'company', 'title', 'email', 
 export const dbGetUsers = ({ isExpert, isTeacher, ...filters }) => {
   let q = knex('users')
     .select(userSummaryFields)
-    .where(likeFilter(filters));
+    .where(likeFilter(filters, true));
 
   if (isExpert) {
     q = q.andWhere({ isExpert: true });

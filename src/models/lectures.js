@@ -79,13 +79,19 @@ export const dbGetExpertLectures = userId => (
     .leftJoin('users', 'lectures.teacherId', 'users.id')
 );
 
-export const dbGetLectures = filters => (
-  knex('lectures')
+export const dbGetLectures = ({ status, ...filters }) => {
+  let q = knex('lectures')
     .select(adminLectureSummaryFields)
     .leftJoin('users as teachers', 'lectures.teacherId', 'teachers.id')
     .leftJoin('users as experts', 'lectures.expertId', 'experts.id')
-    .where(likeFilter(filters))
-);
+    .where(likeFilter(filters, true));
+
+  if (status) {
+    q = q.andWhere({ status });
+  }
+
+  return q;
+};
 
 export const dbGetLecture = id => (
   knex('lectures')
