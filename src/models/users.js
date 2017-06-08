@@ -9,11 +9,20 @@ const userDetailedFields = ['id', 'name', 'phone', 'company', 'title', 'email', 
 'address', 'subjects', 'area', 'locale', 'scope', 'image', 'imageUrl','edStage', 'isExpert', 'isTeacher',
 'officeVisit'];
 
-export const dbGetUsers = filters => (
-  knex('users')
+export const dbGetUsers = ({ isExpert, isTeacher, ...filters }) => {
+  let q = knex('users')
     .select(userSummaryFields)
-    .where(likeFilter(filters))
-);
+    .where(likeFilter(filters));
+
+  if (isExpert) {
+    q = q.andWhere({ isExpert: true });
+  }
+  if (isTeacher) {
+    q = q.andWhere({ isTeacher: true });
+  }
+
+  return q;
+};
 
 export const dbGetUser = id => (
   knex('users')

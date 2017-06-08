@@ -21,7 +21,7 @@ import {
 
 const unknown = fs.readFileSync(join(__dirname, '..', 'assets', 'unknown.png'));
 
-export const getUsers = (request, reply) => dbGetUsers(request.query.filter).then(reply);
+export const getUsers = (request, reply) => dbGetUsers(request.query.filter || {}).then(reply);
 export const getUser = (request, reply) => {
   if (request.pre.user.scope !== 'admin' && request.pre.user.id !== request.params.userId) {
     return reply(Boom.unauthorized('Unprivileged users can only view own userId!'));
