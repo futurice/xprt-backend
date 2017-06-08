@@ -1,12 +1,13 @@
-import Jimp from 'jimp';
+import sharp from 'sharp';
 
 export const resizeImage = image => new Promise((resolve, reject) => (
-  Jimp.read(image)
-  .then(readImage => (
-    readImage
-      .cover(512, 512)
-      .getBuffer(Jimp.MIME_PNG, (err, data) => (err ? reject(err) : resolve(data)))
-  ))
+  sharp(image)
+    .resize(512, 512)
+    .max()
+    .toFormat('png')
+    .toBuffer()
+    .then(data => resolve(data))
+  .catch(err => reject(err))
 ));
 
 export default resizeImage;

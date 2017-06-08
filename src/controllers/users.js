@@ -1,5 +1,6 @@
 import Boom from 'boom';
 import rp from 'request-promise';
+import dataUriToBuffer from 'data-uri-to-buffer';
 
 import fs from 'fs';
 import { join } from 'path';
@@ -70,8 +71,11 @@ export const updateMyUser = async (request, reply) => {
 
   // If request contains an image, resize it to max 512x512 pixels
   if (fields.image) {
-    const buf = Buffer.from(fields.image, 'base64');
+    const buf = dataUriToBuffer(fields.image);
     await resizeImage(buf).then(resized => (fields.image = resized));
+
+    // Set imageUrl to point to backend
+    fields.imageUrl = `${config.backendUrl}/users/profile/${request.pre.user.id}.png`;
   }
 
   return dbUpdateMyUser(request.pre.user.id, fields).then(reply);
@@ -106,7 +110,7 @@ export const updateUser = async (request, reply) => {
 
   // If request contains an image, resize it to max 512x512 pixels
   if (fields.image) {
-    const buf = Buffer.from(fields.image, 'base64');
+    const buf = dataUriToBuffer(fields.image);
     await resizeImage(buf).then(resized => (fields.image = resized));
 
     // Set imageUrl to point to backend
