@@ -23,10 +23,13 @@ const userFields = [
   'officeVisit',
 ];
 
-export const dbGetUsers = ({ isExpert, isTeacher, ...filters }) => {
+export const dbGetUsers = ({ isExpert, isTeacher, any }) => {
   let q = knex('users')
     .select(userFields)
-    .where(likeFilter(filters, true));
+    .where(likeFilter({
+      'users.name': any,
+      'users.email': any,
+    }, true));
 
   if (isExpert) {
     q = q.andWhere({ isExpert: true });

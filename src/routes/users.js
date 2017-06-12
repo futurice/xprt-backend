@@ -29,7 +29,7 @@ const validateRegistrationFields = {
       name: Joi.string().required(),
       email: Joi.string().email().required(),
       locale: Joi.string().required(),
-      password: Joi.string().required(),
+      password: Joi.string().required().min(6),
       oauth2Id: Joi.any().forbidden(), // Disallow setting oauth2Id
       description: Joi.string().optional(),
       details: Joi.string().optional(),

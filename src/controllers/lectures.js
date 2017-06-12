@@ -241,7 +241,7 @@ export const getLectures = (request, reply) => {
     return reply(Boom.unauthorized('Unprivileged user!'));
   }
 
-  return dbGetLectures(request.query.filter)
+  return dbGetLectures(request.query.filter || {})
     .then(reply)
     .catch((err) => {
       reply(Boom.badImplementation(err));

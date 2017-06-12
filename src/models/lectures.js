@@ -83,12 +83,20 @@ export const dbGetExpertLectures = userId => (
     .limit(50)
 );
 
-export const dbGetLectures = ({ status, ...filters }) => {
+export const dbGetLectures = ({ status, any }) => {
   let q = knex('lectures')
     .select(adminLectureSummaryFields)
     .leftJoin('users as teachers', 'lectures.teacherId', 'teachers.id')
     .leftJoin('users as experts', 'lectures.expertId', 'experts.id')
-    .where(likeFilter(filters, true));
+    .where(likeFilter({
+      'lectures.title': any,
+      'lectures.description': any,
+      'teachers.address': any,
+      'experts.name': any,
+      'teachers.name': any,
+      'experts.email': any,
+      'teachers.email': any,
+    }, true));
 
   if (status) {
     q = q.andWhere({ status });

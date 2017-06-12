@@ -2,6 +2,7 @@ import Boom from 'boom';
 import Joi from 'joi';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import isUndefined from 'lodash/isUndefined';
 
 import config from './config';
 import knex from './db';
@@ -15,8 +16,8 @@ export const validateJwt = (decoded, request, callback) => {
     !decoded.name ||
     !decoded.email ||
     !decoded.scope ||
-    !decoded.isExpert ||
-    !decoded.isTeacher;
+    isUndefined(decoded.isExpert) ||
+    isUndefined(decoded.isTeacher);
 
   if (invalidToken) {
     callback(new Error('JWT is missing some fields and not valid! Please log out and in again.'), false);

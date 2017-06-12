@@ -55,7 +55,7 @@ export const getMyUser = (request, reply) => dbGetUser(request.pre.user.id).then
 export const updateMyUser = async (request, reply) => {
   const fields = {
     name: request.payload.name,
-    email: request.payload.email,
+    email: request.payload.email && request.payload.email.toLowerCase().trim(),
     locale: request.payload.locale,
     description: request.payload.description,
     details: request.payload.details,
@@ -85,9 +85,10 @@ export const updateMyUser = async (request, reply) => {
 // ADMIN ONLY: Update any user fields (including scope for upgrading users to admin status)
 export const updateUser = async (request, reply) => {
   const fields = {
-    ...request.payload.name,
+    ...request.payload,
     subjects: JSON.stringify(request.payload.subjects),
     area: JSON.stringify(request.payload.area),
+    email: request.payload.email && request.payload.email.toLowerCase().trim(),
   };
 
   // If request contains an image, resize it to max 512x512 pixels
@@ -124,6 +125,10 @@ export const registerUser = (request, reply) => {
     request.payload.area = JSON.stringify(request.payload.area);
   }
 
+  if (request.payload.email) {
+    request.payload.email = request.payload.email.toLowerCase().trim();
+  }
+
   return hashPassword(request.payload.password)
     .then(passwordHash => dbCreateUser({
       ...request.payload,
@@ -138,7 +143,6 @@ export const registerUser = (request, reply) => {
       isTeacher: false,
       isExpert: true, // Only experts can register as local users
     })))
-    .then(reply)
     .then(sendMail({
       to: request.payload.email,
       subject: 'Welcome to XPRT',
@@ -146,10 +150,10 @@ export const registerUser = (request, reply) => {
     }))
     .catch((err) => {
       if (err.constraint === 'users_email_unique') {
-        reply(Boom.conflict('Account already exists'));
-      } else {
-        reply(Boom.badImplementation(err));
+        return reply(Boom.conflict('Account already exists. Try using another email address.'));
       }
+
+      return reply(Boom.badImplementation(err));
     });
 };
 
@@ -177,7 +181,7 @@ export const oauth2Authenticate = async (request, reply) => {
       registeredUser = await dbCreateUser({
         scope: 'user',
         name: `${oa2User.first_name} ${oa2User.last_name}`,
-        email: oa2User.email,
+        email: oa2User.email && oa2User.email.toLowerCase().trim(),
         locale: oa2User.lang_name,
         oauth2Id: oa2User.id,
         imageUrl: oa2User.avatar_thumb,
@@ -189,7 +193,7 @@ export const oauth2Authenticate = async (request, reply) => {
       registeredUser = await dbUpdateUser(registeredUser.id, {
         scope: 'user',
         name: `${oa2User.first_name} ${oa2User.last_name}`,
-        email: oa2User.email,
+        email: oa2User.email && oa2User.email.toLowerCase().trim(),
         locale: oa2User.lang_name,
         oauth2Id: oa2User.id,
         imageUrl: oa2User.avatar_thumb,
@@ -219,7 +223,7 @@ export const oauth2Authenticate = async (request, reply) => {
   } catch (err) {
     if (err.constraint === 'users_email_unique') {
       // TODO: what to do in this situation?
-      return reply(Boom.conflict('Account already exists'));
+      return reply(Boom.conflict('Account already exists. Try using another email address.'));
     }
 
     return reply(Boom.badImplementation(err));

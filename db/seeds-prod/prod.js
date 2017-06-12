@@ -10,7 +10,9 @@ fixtureFactory.register('user', {
   name: (fixtures, options, dataModel, faker) => (
     `${faker.name.firstName()} ${faker.name.lastName()}`
   ),
-  email: 'internet.email',
+  email: (fixtures, options, dataModel, faker) => (
+    faker.internet.email().toLowerCase()
+  ),
   locale: 'fi',
   description: 'lorem.sentence',
 
