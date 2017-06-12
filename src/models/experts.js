@@ -28,6 +28,7 @@ export const dbGetExperts = filter => (
   knex('users')
     .select(expertSummaryFields)
     .where({ isExpert: 'true' })
+    .limit(50)
     .andWhere(likeFilter({
       name: filter,
       title: filter,
