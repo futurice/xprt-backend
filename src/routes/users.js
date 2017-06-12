@@ -46,35 +46,43 @@ const validateRegistrationFields = {
 };
 
 const users = [
-  // Get a list of all users
+  // ADMIN: Get a list of all users (experts & teachers)
   {
     method: 'GET',
     path: '/users',
     config: getAuthWithScope('admin'),
     handler: getUsers,
   },
+  // ADMIN: Get info about a specific user (experts & teachers)
+  {
+    method: 'GET',
+    path: '/users/{userId}',
+    config: merge({}, validateUserId, getAuthWithScope('admin')),
+    handler: getUser,
+  },
+  // ADMIN: Modify any user fields (experts & teachers)
+  {
+    method: 'PATCH',
+    path: '/users/{userId}',
+    config: merge({}, validateUserId, getAuthWithScope('admin')),
+    handler: updateUser,
+  },
+  // ADMIN: Delete a user (experts & teachers)
+  {
+    method: 'DELETE',
+    path: '/users/{userId}',
+    config: merge({}, validateUserId, getAuthWithScope('admin')),
+    handler: delUser,
+  },
+
+  // Get own profile
   {
     method: 'GET',
     path: '/users/me',
     config: getAuthWithScope('user'),
     handler: getMyUser,
   },
-  {
-    method: 'GET',
-    path: '/users/profile/{userId}.png',
-    // config: getAuthWithScope('user'), // TODO: require authentication?
-    handler: getProfilePicture,
-  },
-
-  // Get info about a specific user
-  {
-    method: 'GET',
-    path: '/users/{userId}',
-    config: merge({}, validateUserId, getAuthWithScope('user')),
-    handler: getUser,
-  },
-
-  // Update user profile
+  // Update own profile
   {
     method: 'PATCH',
     path: '/users/me',
@@ -82,19 +90,12 @@ const users = [
     handler: updateMyUser,
   },
 
+  // Fetch profile picture (NOTE: public, fix this? NOTE2: must be public for expert user profiles)
   {
-    method: 'PATCH',
-    path: '/users/{userId}',
-    config: merge({}, validateUserId, getAuthWithScope('admin')),
-    handler: updateUser,
-  },
-
-  // Delete a user, admin only
-  {
-    method: 'DELETE',
-    path: '/users/{userId}',
-    config: merge({}, validateUserId, getAuthWithScope('admin')),
-    handler: delUser,
+    method: 'GET',
+    path: '/users/profile/{userId}.png',
+    // config: getAuthWithScope('user'), // TODO: require authentication?
+    handler: getProfilePicture,
   },
 
   // Authenticate as user

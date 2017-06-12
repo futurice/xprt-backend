@@ -3,7 +3,6 @@ import {
   dbGetAllFeedback,
   dbGetFeedback,
   dbCreateFeedback,
-  dbUpdateFeedback,
   dbDelFeedback,
 } from '../models/feedback';
 
@@ -16,8 +15,12 @@ import {
 } from '../models/users';
 */
 
+// ADMIN ONLY
 export const getAllFeedback = (request, reply) => dbGetAllFeedback().then(reply);
+// ADMIN ONLY
 export const getFeedback = (request, reply) => dbGetFeedback(request.params.feedbackId).then(reply);
+// ADMIN ONLY
+export const delFeedback = (request, reply) => dbDelFeedback(request.params.feedbackId).then(reply);
 
 export const createFeedback = async (request, reply) => {
   try {
@@ -61,5 +64,3 @@ export const createFeedback = async (request, reply) => {
     return reply(Boom.badImplementation(e));
   }
 };
-
-export const delFeedback = (request, reply) => dbDelFeedback(request.params.feedbackId).then(reply);

@@ -20,7 +20,7 @@ import {
 import sendMail from '../utils/email';
 import config from '../utils/config';
 
-// EXPERTS: Returns all lectures owned by an expert account
+// EXPERTS ONLY: Returns all lectures owned by an expert account
 export const getExpertLectures = async (request, reply) => {
   try {
     const user = await dbGetUser(request.pre.user.id);
@@ -38,7 +38,7 @@ export const getExpertLectures = async (request, reply) => {
   }
 };
 
-// EXPERTS: Controller for handling invitation status updates by experts
+// EXPERTS ONLY: Controller for handling invitation status updates by experts
 export const changeInvitationStatus = async (request, reply) => {
   try {
     const lecture = await dbGetLecture(request.params.lectureId);
@@ -87,7 +87,7 @@ export const changeInvitationStatus = async (request, reply) => {
   }
 };
 
-// TEACHERS: Returns all lectures owned by a teacher account
+// TEACHERS ONLY: Returns all lectures owned by a teacher account
 export const getTeacherLectures = async (request, reply) => {
   try {
     // Check that user is a teacher (or admin)
@@ -103,7 +103,7 @@ export const getTeacherLectures = async (request, reply) => {
   }
 };
 
-// TEACHERS: Returns more info about a particular lecture
+// TEACHERS ONLY: Returns more info about a particular lecture
 export const getLecture = async (request, reply) => {
   try {
     // Check that user is a teacher (or admin)
@@ -131,7 +131,7 @@ export const getLecture = async (request, reply) => {
   }
 };
 
-// TEACHERS: Create a lecture
+// TEACHERS ONLY: Create a lecture
 export const createLecture = async (request, reply) => {
   try {
     // Check that user is a teacher (or admin)
@@ -167,7 +167,7 @@ export const createLecture = async (request, reply) => {
   }
 };
 
-// TEACHERS: Update lecture details
+// TEACHERS ONLY: Update lecture details
 export const updateLecture = async (request, reply) => {
   try {
     // Check that user is a teacher (or admin)

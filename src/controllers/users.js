@@ -15,21 +15,16 @@ import {
   dbGetOAuth2User,
   dbDelUser,
   dbUpdateUser,
-  dbUpdateMyUser,
   dbCreateUser,
 } from '../models/users';
 
 const unknown = fs.readFileSync(join(__dirname, '..', 'assets', 'unknown.png'));
 
+// ADMIN ONLY: Get all users / detailed info about one user
 export const getUsers = (request, reply) => dbGetUsers(request.query.filter || {}).then(reply);
-export const getUser = (request, reply) => {
-  if (request.pre.user.scope !== 'admin' && request.pre.user.id !== request.params.userId) {
-    return reply(Boom.unauthorized('Unprivileged users can only view own userId!'));
-  }
+export const getUser = (request, reply) => dbGetUser(request.params.userId).then(reply);
 
-  return dbGetUser(request.params.userId).then(reply);
-};
-
+// PUBLIC: Fetch profile picture
 export const getProfilePicture = (request, reply) => dbGetUser(request.params.userId)
   .then((user) => {
     if (!user) {
@@ -41,8 +36,7 @@ export const getProfilePicture = (request, reply) => dbGetUser(request.params.us
     }
   });
 
-export const getMyUser = (request, reply) => dbGetUser(request.pre.user.id).then(reply);
-
+// TEACHERS, EXPERTS, ADMINS: Delete user account (unused by clients)
 export const delUser = (request, reply) => {
   if (request.pre.user.scope !== 'admin' && request.pre.user.id !== request.params.userId) {
     return reply(Boom.unauthorized('Unprivileged users can only delete own userId!'));
@@ -51,6 +45,13 @@ export const delUser = (request, reply) => {
   return dbDelUser(request.params.userId).then(reply);
 };
 
+// TEACHERS & EXPERTS: Get info about own user
+export const getMyUser = (request, reply) => dbGetUser(request.pre.user.id).then(reply);
+
+// TEACHERS & EXPERTS: Update own profile
+// NOTE: For teachers, some fields are fetched from OAuth2 endpoint
+// TODO: prohibit updating these fields via this endpoint?
+// (worst case scenario is they get out of sync with OAuth2 endpoint, until next login)
 export const updateMyUser = async (request, reply) => {
   const fields = {
     name: request.payload.name,
@@ -78,35 +79,16 @@ export const updateMyUser = async (request, reply) => {
     fields.imageUrl = `${config.backendUrl}/users/profile/${request.pre.user.id}.png`;
   }
 
-  return dbUpdateMyUser(request.pre.user.id, fields).then(reply);
+  return dbUpdateUser(request.pre.user.id, fields).then(reply);
 };
 
+// ADMIN ONLY: Update any user fields (including scope for upgrading users to admin status)
 export const updateUser = async (request, reply) => {
-  if (request.pre.user.scope !== 'admin' && request.pre.user.id !== request.params.userId) {
-    return reply(Boom.unauthorized('Unprivileged users can only perform updates on own userId!'));
-  }
-
   const fields = {
-    name: request.payload.name,
-    email: request.payload.email,
-    locale: request.payload.locale,
-    description: request.payload.description,
-    details: request.payload.details,
-    title: request.payload.title,
-    address: request.payload.address,
-    phone: request.payload.phone,
-    company: request.payload.company,
-    officeVisit: request.payload.officeVisit,
+    ...request.payload.name,
     subjects: JSON.stringify(request.payload.subjects),
     area: JSON.stringify(request.payload.area),
-    image: request.payload.image,
-    edStage: request.payload.edStage,
   };
-
-  // Only admins are allowed to modify user scope
-  if (request.pre.user.scope === 'admin') {
-    fields.scope = request.payload.scope;
-  }
 
   // If request contains an image, resize it to max 512x512 pixels
   if (fields.image) {
@@ -120,6 +102,7 @@ export const updateUser = async (request, reply) => {
   return dbUpdateUser(request.params.userId, fields).then(reply);
 };
 
+// Authenticate local user (experts)
 export const authUser = (request, reply) => (
   reply(createToken({
     id: request.pre.user.id,
@@ -131,6 +114,7 @@ export const authUser = (request, reply) => (
   }))
 );
 
+// Register new local user (experts)
 export const registerUser = (request, reply) => {
   if (request.payload.subjects) {
     request.payload.subjects = JSON.stringify(request.payload.subjects);
@@ -151,8 +135,8 @@ export const registerUser = (request, reply) => {
       name: user.name,
       email: user.email,
       scope: 'user',
-      isTeacher: user.isTeacher,
-      isExpert: user.isExpert,
+      isTeacher: false,
+      isExpert: true, // Only experts can register as local users
     })))
     .then(reply)
     .then(sendMail({
@@ -169,6 +153,7 @@ export const registerUser = (request, reply) => {
     });
 };
 
+// Perform OAuth2 authentication (teachers)
 export const oauth2Authenticate = async (request, reply) => {
   if (!request.auth.isAuthenticated) {
     return reply(`Authentication failed due to: ${request.auth.error.message}`);
@@ -188,6 +173,7 @@ export const oauth2Authenticate = async (request, reply) => {
     let registeredUser = await dbGetOAuth2User(oa2User.id);
 
     if (!registeredUser) {
+      // Register as new user
       registeredUser = await dbCreateUser({
         scope: 'user',
         name: `${oa2User.first_name} ${oa2User.last_name}`,
@@ -195,7 +181,19 @@ export const oauth2Authenticate = async (request, reply) => {
         locale: oa2User.lang_name,
         oauth2Id: oa2User.id,
         imageUrl: oa2User.avatar_thumb,
-        isTeacher: true, // OAuth2 logins only available for teachers
+        isTeacher: true, // Only teachers can register through OAuth2
+        isExpert: false,
+      });
+    } else {
+      // User has logged in via OAuth2 previously, update local user according to OAuth2 user data
+      registeredUser = await dbUpdateUser(registeredUser.id, {
+        scope: 'user',
+        name: `${oa2User.first_name} ${oa2User.last_name}`,
+        email: oa2User.email,
+        locale: oa2User.lang_name,
+        oauth2Id: oa2User.id,
+        imageUrl: oa2User.avatar_thumb,
+        isTeacher: true, // Only teachers can register through OAuth2
         isExpert: false,
       });
     }

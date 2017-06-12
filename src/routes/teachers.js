@@ -1,4 +1,7 @@
 import Joi from 'joi';
+import { merge } from 'lodash';
+
+import { getAuthWithScope } from '../utils/auth';
 
 import {
   getTeachers,
@@ -18,6 +21,7 @@ const teachers = [
   {
     method: 'GET',
     path: '/teachers',
+    config: getAuthWithScope('admin'),
     handler: getTeachers,
   },
 
@@ -25,7 +29,7 @@ const teachers = [
   {
     method: 'GET',
     path: '/teachers/{teacherId}',
-    config: validateTeacherId,
+    config: merge({}, validateTeacherId, getAuthWithScope('admin')),
     handler: getTeacher,
   },
 ];

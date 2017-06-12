@@ -7,7 +7,6 @@ import {
   getAllFeedback,
   getFeedback,
   createFeedback,
-  updateFeedback,
   delFeedback,
 } from '../controllers/feedback';
 
@@ -36,6 +35,7 @@ const feedback = [
   {
     method: 'GET',
     path: '/feedback',
+    config: getAuthWithScope('admin'),
     handler: getAllFeedback,
   },
 
@@ -43,7 +43,7 @@ const feedback = [
   {
     method: 'GET',
     path: '/feedback/{feedbackId}',
-    config: validateFeedbackId,
+    config: merge({}, validateFeedbackId, getAuthWithScope('admin')),
     handler: getFeedback,
   },
 
@@ -59,7 +59,7 @@ const feedback = [
   {
     method: 'DELETE',
     path: '/feedback/{feedbackId}',
-    config: merge({}, validateFeedbackId, getAuthWithScope('user')),
+    config: merge({}, validateFeedbackId, getAuthWithScope('admin')),
     handler: delFeedback,
   },
 ];

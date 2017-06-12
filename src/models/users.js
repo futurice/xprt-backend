@@ -2,16 +2,30 @@ import knex, { likeFilter } from '../utils/db';
 
 import config from '../utils/config';
 
-const userSummaryFields = ['id', 'name', 'phone', 'company', 'title', 'email', 'description', 'details',
-'address', 'subjects', 'area', 'locale', 'scope', 'imageUrl','isExpert','isTeacher','edStage',
-'officeVisit'];
-const userDetailedFields = ['id', 'name', 'phone', 'company', 'title', 'email', 'description', 'details',
-'address', 'subjects', 'area', 'locale', 'scope', 'image', 'imageUrl','edStage', 'isExpert', 'isTeacher',
-'officeVisit'];
+const userFields = [
+  'id',
+  'name',
+  'phone',
+  'company',
+  'title',
+  'email',
+  'description',
+  'details',
+  'address',
+  'subjects',
+  'area',
+  'locale',
+  'scope',
+  'imageUrl',
+  'isExpert',
+  'isTeacher',
+  'edStage',
+  'officeVisit',
+];
 
 export const dbGetUsers = ({ isExpert, isTeacher, ...filters }) => {
   let q = knex('users')
-    .select(userSummaryFields)
+    .select(userFields)
     .where(likeFilter(filters, true));
 
   if (isExpert) {
@@ -26,20 +40,14 @@ export const dbGetUsers = ({ isExpert, isTeacher, ...filters }) => {
 
 export const dbGetUser = id => (
   knex('users')
-    .first(userDetailedFields)
+    .first(userFields)
     .where({ id })
 );
 
 export const dbGetOAuth2User = oauth2Id => (
   knex('users')
-    .first(userDetailedFields)
+    .first(userFields)
     .where({ oauth2Id })
-);
-
-export const dbUpdateMyUser = (id, fields) => (
-  knex('users')
-    .update({ ...fields })
-    .where({ id })
 );
 
 export const dbUpdateUser = (id, fields) => (
@@ -58,7 +66,7 @@ export const dbCreateUser = ({ password, ...fields }) => (
   knex.transaction(async (trx) => {
     const user = await trx('users')
       .insert(fields)
-      .returning('*')
+      .returning(userFields)
       .then(results => results[0]); // return only first result
 
     await trx('secrets')
