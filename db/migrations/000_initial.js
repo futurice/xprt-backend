@@ -45,8 +45,7 @@ exports.up = knex => (
       table.enum('status', [
         'pending',
         'accepted',
-        'rejected',
-        'canceled',
+        'declined',
       ]).defaultTo('pending');
       table.timestamp('statusDate').notNullable(); // new attribute
       table.timestamp('dateOption1').notNullable(); // dates changed to dateOption1

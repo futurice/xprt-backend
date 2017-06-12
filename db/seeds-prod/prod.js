@@ -46,8 +46,8 @@ fixtureFactory.register('lecture', {
   status: () => ([
     'pending',
     'accepted',
-    'rejected',
-  ][Math.floor(Math.random() * 5)]),
+    'declined',
+  ][Math.floor(Math.random() * 3)]),
   statusDate: 'date.recent',
   dateOption1: 'date.future',
   dateOption2: 'date.future',

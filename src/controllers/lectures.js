@@ -149,11 +149,10 @@ export const changeInvitationStatus = async (request, reply) => {
         reply(updatedLecture);
 
         const teacher = await dbGetUser(updatedLecture.teacherId);
-        const changedStatus = updatedLecture.status === 'rejected' ? 'canceled' : updatedLecture.status;
         sendMail({
           to: teacher.email,
           subject: `Lecture invitation ${updatedLecture.status} by ${user.name}`,
-          text: `${user.name} has ${changedStatus} your lecture invitation.\n\n` +
+          text: `${user.name} has ${updatedLecture.status} your lecture invitation.\n\n` +
                 `Manage your invitations at ${config.frontendUrl}/profile`
           ,
         });
