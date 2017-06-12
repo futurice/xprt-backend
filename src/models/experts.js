@@ -32,8 +32,8 @@ export const dbGetExperts = filter => (
       name: filter,
       title: filter,
       description: filter,
-      'area::text': filter,
-      'subjects::text': filter,
+      //'area::text': filter,
+      //'subjects': filter,
     }, true))
 );
 

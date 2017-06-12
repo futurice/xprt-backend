@@ -80,7 +80,10 @@ export const updateLecture = async (request, reply) => {
     await dbUpdateLecture(
       request.pre.user.id,
       request.params.lectureId,
-      request.payload,
+      {
+        ...request.payload,
+        subjects: request.payload.subjects && JSON.stringify(request.payload.subjects),
+      },
     );
 
     dbGetLecture(request.params.lectureId)
