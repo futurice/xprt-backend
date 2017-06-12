@@ -8,6 +8,8 @@ const expertSummaryFields = [
   'imageUrl',
   'area',
   'subjects',
+  'title',
+  'company',
 ];
 
 const expertDetailedFields = [
