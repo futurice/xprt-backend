@@ -20,131 +20,55 @@ import {
 import sendMail from '../utils/email';
 import config from '../utils/config';
 
-export const getTeacherLectures = (request, reply) => dbGetTeacherLectures(request.pre.user.id).then(reply);
-export const getExpertLectures = (request, reply) => dbGetExpertLectures(request.pre.user.id).then(reply);
-
-export const getLectures = (request, reply) => {
-  if (request.pre.user.scope !== 'admin') {
-    return reply(Boom.unauthorized('Unprivileged user!'));
-  }
-  dbGetLectures(request.query.filter)
-    .then(reply)
-    .catch((err) => {
-      reply(Boom.badImplementation(err));
-    });
-};
-
-export const getLecture = (request, reply) => dbGetLecture(request.params.lectureId).then(reply);
-export const createLecture = async (request, reply) => {
+// EXPERTS: Returns all lectures owned by an expert account
+export const getExpertLectures = async (request, reply) => {
   try {
-    const lecture = await dbCreateLecture(
-      request.pre.user.id,
-      {
-        ...request.payload,
-        subjects: request.payload.subjects && JSON.stringify(request.payload.subjects),
-        statusDate: new Date(),
-      },
-    );
+    const user = await dbGetUser(request.pre.user.id);
 
-    dbGetLecture(lecture.id)
-      .then(async (createdLecture) => {
-        reply(createdLecture);
-
-        const expert = await dbGetUser(createdLecture.expertId);
-        sendMail({
-          to: expert.email,
-          subject: 'Lecture invitation received',
-          text: 'You have been sent a lecture invitation',
-        });
-      })
-      .catch(err => console.log('Error while sending lecture invitation e-mail', err));
-  } catch (e) {
-    reply(Boom.badImplementation(e));
-  }
-};
-
-export const updateLecture = async (request, reply) => {
-  const user = await dbGetUser(
-    request.pre.user.id,
-  );
-
-  if (request.pre.user.scope !== 'admin') {
-    if (!user.isTeacher) {
-      return reply(Boom.forbidden('User is not a teacher'));
+    // Check that user is a teacher (or admin)
+    if (request.pre.user.scope !== 'admin') {
+      if (!user.isExpert) {
+        return reply(Boom.forbidden('User is not an expert'));
+      }
     }
-  }
 
-  // const oldLecture = await dbGetLecture(request.params.lectureId);
-
-  try {
-    await dbUpdateLecture(
-      request.pre.user.id,
-      request.params.lectureId,
-      {
-        ...request.payload,
-        subjects: request.payload.subjects && JSON.stringify(request.payload.subjects),
-      },
-    );
-
-    dbGetLecture(request.params.lectureId)
-      .then(async (updatedLecture) => {
-        reply(updatedLecture);
-
-        const diffKeys = reduce(request.payload, (result, value, key) =>
-          (isEqual(value, updatedLecture[key]) ? result : result.concat(key))
-        , []);
-
-        const expert = await dbGetUser(updatedLecture.expertId);
-        sendMail({
-          to: expert.email,
-          subject: 'Lecture invitation changed',
-          text: `Teacher '${user.name}' has modified your lecture invitation` +
-                // TODO: more user friendly
-                `Changed fields: ${JSON.stringify(diffKeys, null, 4)}\n\n` +
-                `Manage your invitations at ${config.frontendUrl}/profile`,
-        });
-      })
-      .catch(err => console.log('Error while sending lecture change e-mail', err));
+    return dbGetExpertLectures(request.pre.user.id).then(reply);
   } catch (e) {
-    reply(Boom.badImplementation(e));
+    return reply(Boom.badImplementation(e));
   }
 };
 
-// Controller for handling invitation status updates by experts
+// EXPERTS: Controller for handling invitation status updates by experts
 export const changeInvitationStatus = async (request, reply) => {
-
-  const user = await dbGetUser(
-    request.pre.user.id,
-  );
-  const lecture = await dbGetLecture(
-    request.params.lectureId,
-  );
-  if (!lecture) {
-    return reply(Boom.forbidden('Lecture not found'));
-  }
-
-  if (request.pre.user.scope !== 'admin') {
-    if (!user.isExpert) {
-      return reply(Boom.forbidden('User is not an expert'));
-    }
-
-    if (user.id !== lecture.expertId) {
-      return reply(Boom.forbidden('Expert not invited to lecture'));
-    }
-  }
-
-  const fields = {
-    status: request.payload.status,
-  };
-
   try {
+    const lecture = await dbGetLecture(request.params.lectureId);
+    if (!lecture) {
+      return reply(Boom.notFound('Lecture not found'));
+    }
+
+    const user = await dbGetUser(request.pre.user.id);
+    // Check that user is an expert and belongs to lecture
+    if (request.pre.user.scope !== 'admin') {
+      if (!user.isExpert) {
+        return reply(Boom.forbidden('User is not an expert'));
+      }
+
+      if (user.id !== lecture.expertId) {
+        return reply(Boom.forbidden('Expert not invited to lecture'));
+      }
+    }
+
+    const fields = {
+      status: request.payload.status,
+    };
+
     await dbUpdateLectureExpert(
       request.pre.user.id,
       request.params.lectureId,
       fields,
     );
 
-    dbGetLecture(request.params.lectureId)
+    return dbGetLecture(request.params.lectureId)
       .then(async (updatedLecture) => {
         reply(updatedLecture);
 
@@ -159,8 +83,167 @@ export const changeInvitationStatus = async (request, reply) => {
       })
       .catch(err => console.log('Error while sending lecture change e-mail', err));
   } catch (e) {
-    reply(Boom.badImplementation(e));
+    return reply(Boom.badImplementation(e));
   }
 };
 
-export const delLecture = (request, reply) => dbDelLecture(request.pre.user.id, request.params.lectureId).then(reply);
+// TEACHERS: Returns all lectures owned by a teacher account
+export const getTeacherLectures = async (request, reply) => {
+  try {
+    // Check that user is a teacher (or admin)
+    if (request.pre.user.scope !== 'admin') {
+      if (!request.pre.user.isTeacher) {
+        return reply(Boom.forbidden('User is not a teacher'));
+      }
+    }
+
+    return dbGetTeacherLectures(request.pre.user.id).then(reply);
+  } catch (e) {
+    return reply(Boom.badImplementation(e));
+  }
+};
+
+// TEACHERS: Returns more info about a particular lecture
+export const getLecture = async (request, reply) => {
+  try {
+    // Check that user is a teacher (or admin)
+    if (request.pre.user.scope !== 'admin') {
+      if (!request.pre.user.isTeacher) {
+        return reply(Boom.forbidden('User is not a teacher'));
+      }
+    }
+
+    // Check that user belongs to lecture (admins can access everything)
+    const lecture = await dbGetLecture(request.params.lectureId);
+    if (!lecture) {
+      return reply(Boom.notFound('Lecture not found'));
+    }
+
+    if (request.pre.user.scope !== 'admin' &&
+        request.pre.user.id !== lecture.expertId &&
+        request.pre.user.id !== lecture.teacherId) {
+      return reply(Boom.unauthorized('Unprivileged users may only access own lectures'));
+    }
+
+    return reply(lecture);
+  } catch (e) {
+    return reply(Boom.badImplementation(e));
+  }
+};
+
+// TEACHERS: Create a lecture
+export const createLecture = async (request, reply) => {
+  try {
+    // Check that user is a teacher (or admin)
+    if (request.pre.user.scope !== 'admin') {
+      if (!request.pre.user.isTeacher) {
+        return reply(Boom.forbidden('User is not a teacher'));
+      }
+    }
+
+    const lecture = await dbCreateLecture(
+      request.pre.user.id,
+      {
+        ...request.payload,
+        subjects: request.payload.subjects && JSON.stringify(request.payload.subjects),
+        statusDate: new Date(),
+      },
+    );
+
+    return dbGetLecture(lecture.id)
+      .then(async (createdLecture) => {
+        reply(createdLecture);
+
+        const expert = await dbGetUser(createdLecture.expertId);
+        sendMail({
+          to: expert.email,
+          subject: 'Lecture invitation received',
+          text: 'You have been sent a lecture invitation',
+        });
+      })
+      .catch(err => console.log('Error while sending lecture invitation e-mail', err));
+  } catch (e) {
+    return reply(Boom.badImplementation(e));
+  }
+};
+
+// TEACHERS: Update lecture details
+export const updateLecture = async (request, reply) => {
+  try {
+    // Check that user is a teacher (or admin)
+    if (request.pre.user.scope !== 'admin') {
+      if (!request.pre.user.isTeacher) {
+        return reply(Boom.forbidden('User is not a teacher'));
+      }
+    }
+
+    // Check that user belongs to lecture (admins can access everything)
+    const lecture = await dbGetLecture(request.params.lectureId);
+    if (!lecture) {
+      return reply(Boom.notFound('Lecture not found'));
+    }
+
+    if (request.pre.user.scope !== 'admin' &&
+        request.pre.user.id !== lecture.expertId &&
+        request.pre.user.id !== lecture.teacherId) {
+      return reply(Boom.unauthorized('Unprivileged users may only access own lectures'));
+    }
+
+    await dbUpdateLecture(
+      request.pre.user.id,
+      request.params.lectureId,
+      {
+        ...request.payload,
+        subjects: request.payload.subjects && JSON.stringify(request.payload.subjects),
+      },
+    );
+
+    return dbGetLecture(request.params.lectureId)
+      .then(async (updatedLecture) => {
+        reply(updatedLecture);
+
+        const diffKeys = reduce(request.payload, (result, value, key) =>
+          (isEqual(value, updatedLecture[key]) ? result : result.concat(key))
+        , []);
+
+        const expert = await dbGetUser(updatedLecture.expertId);
+        sendMail({
+          to: expert.email,
+          subject: 'Lecture invitation changed',
+          text: `Teacher '${request.pre.user.name}' has modified your lecture invitation` +
+                // TODO: more user friendly
+                `Changed fields: ${JSON.stringify(diffKeys, null, 4)}\n\n` +
+                `Manage your invitations at ${config.frontendUrl}/profile`,
+        });
+      })
+      .catch(err => console.log('Error while sending lecture change e-mail', err));
+  } catch (e) {
+    return reply(Boom.badImplementation(e));
+  }
+};
+
+// ADMIN ONLY: Delete a lecture permanently
+export const delLecture = async (request, reply) => {
+  try {
+    if (request.pre.user.scope !== 'admin') {
+      return reply(Boom.forbidden('Unprivileged user!'));
+    }
+
+    return dbDelLecture(request.pre.user.id, request.params.lectureId).then(reply);
+  } catch (e) {
+    return reply(Boom.badImplementation(e));
+  }
+};
+
+// ADMIN ONLY: Returns all lectures in system
+export const getLectures = (request, reply) => {
+  if (request.pre.user.scope !== 'admin') {
+    return reply(Boom.unauthorized('Unprivileged user!'));
+  }
+
+  return dbGetLectures(request.query.filter)
+    .then(reply)
+    .catch((err) => {
+      reply(Boom.badImplementation(err));
+    });
+};

@@ -10,7 +10,13 @@ const bearerRegex = /(Bearer\s+)*(.*)/i;
 
 // Check that a decoded JWT contains all required fields
 export const validateJwt = (decoded, request, callback) => {
-  const invalidToken = !decoded.id || !decoded.email || !decoded.scope;
+  const invalidToken =
+    !decoded.id ||
+    !decoded.name ||
+    !decoded.email ||
+    !decoded.scope ||
+    !decoded.isExpert ||
+    !decoded.isTeacher;
 
   if (invalidToken) {
     callback(new Error('JWT is missing some fields and not valid! Please log out and in again.'), false);
@@ -92,8 +98,8 @@ export const doAuth = ({
 });
 
 // Create a new JWT for user with `email` and `scope`
-export const createToken = (id, email, scope) => ({
-  token: jwt.sign({ id, email, scope }, config.auth.secret, {
+export const createToken = fields => ({
+  token: jwt.sign(fields, config.auth.secret, {
     algorithm: config.auth.options.algorithms[0],
   }),
 });

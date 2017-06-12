@@ -24,62 +24,63 @@ const validateLectureId = {
 
 
 const lectures = [
-  // Get a list of all lectures
+  // Get a list of all lectures (admins)
   {
     method: 'GET',
     path: '/lectures',
-    config: getAuthWithScope('user'),
+    config: getAuthWithScope('admin'),
     handler: getLectures,
   },
+  // Delete a lecture permanently from system (admins)
+  {
+    method: 'DELETE',
+    path: '/lectures/{lectureId}',
+    config: merge({}, validateLectureId, getAuthWithScope('admin')),
+    handler: delLecture,
+  },
+  // Get more info about a specific lecture (teachers, admins)
+  {
+    method: 'GET',
+    path: '/lectures/{lectureId}',
+    config: merge({}, validateLectureId, getAuthWithScope('user')),
+    handler: getLecture,
+  },
+
+  // Get a list of lectures (teachers)
   {
     method: 'GET',
     path: '/teacher/lectures',
     config: getAuthWithScope('user'),
     handler: getTeacherLectures,
   },
-  {
-    method: 'GET',
-    path: '/expert/lectures',
-    config: merge({}, getAuthWithScope('user')),
-    handler: getExpertLectures,
-  },
-
-  // Get more info about a specific lecture
-  {
-    method: 'GET',
-    path: '/lectures/{lectureId}',
-    config: validateLectureId,
-    handler: getLecture,
-  },
-  // Invitations
-  {
-    method: 'PATCH',
-    path: '/invitations/{lectureId}',
-    config: merge({}, validateLectureId, getAuthWithScope('user')),
-    handler: changeInvitationStatus,
-  },
-  // Create new lecture
+  // Create new lecture (teachers)
   {
     method: 'POST',
     path: '/teacher/lectures',
     config: getAuthWithScope('user'),
     handler: createLecture,
   },
-
-  // Update a lecture
+  // Update a lecture (teachers)
   {
     method: 'PATCH',
     path: '/lectures/{lectureId}',
-    config: merge({}, validateLectureId, getAuthWithScope('user')), // FIXME: expert access?
+    config: merge({}, validateLectureId, getAuthWithScope('user')),
     handler: updateLecture,
   },
 
-  // Delete a lecture
+  // Get a list of lectures (experts)
   {
-    method: 'DELETE',
-    path: '/lectures/{lectureId}',
-    config: merge({}, validateLectureId, getAuthWithScope('user')), // FIXME: expert access?
-    handler: delLecture,
+    method: 'GET',
+    path: '/expert/lectures',
+    config: merge(getAuthWithScope('user')),
+    handler: getExpertLectures,
+  },
+  // Modify lecture invitation status (experts)
+  {
+    method: 'PATCH',
+    path: '/invitations/{lectureId}',
+    config: merge({}, validateLectureId, getAuthWithScope('user')),
+    handler: changeInvitationStatus,
   },
 ];
 

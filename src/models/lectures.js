@@ -70,6 +70,8 @@ export const dbGetTeacherLectures = userId => (
     .select(teacherLectureSummaryFields)
     .where({ teacherId: userId })
     .leftJoin('users', 'lectures.expertId', 'users.id')
+    .orderBy('lectures.dateOption1', 'desc')
+    .limit(50)
 );
 
 export const dbGetExpertLectures = userId => (
@@ -77,6 +79,8 @@ export const dbGetExpertLectures = userId => (
     .select(expertLectureSummaryFields)
     .where({ expertId: userId })
     .leftJoin('users', 'lectures.teacherId', 'users.id')
+    .orderBy('lectures.dateOption1', 'desc')
+    .limit(50)
 );
 
 export const dbGetLectures = ({ status, ...filters }) => {

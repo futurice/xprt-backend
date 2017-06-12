@@ -121,7 +121,14 @@ export const updateUser = async (request, reply) => {
 };
 
 export const authUser = (request, reply) => (
-  reply(createToken(request.pre.user.id, request.pre.user.email, request.pre.user.scope))
+  reply(createToken({
+    id: request.pre.user.id,
+    name: request.pre.user.name,
+    email: request.pre.user.email,
+    scope: request.pre.user.scope,
+    isTeacher: request.pre.user.isTeacher,
+    isExpert: request.pre.user.isExpert,
+  }))
 );
 
 export const registerUser = (request, reply) => {
@@ -139,7 +146,14 @@ export const registerUser = (request, reply) => {
       password: passwordHash,
       scope: 'user',
     }))
-    .then(user => reply(createToken(user.id, user.email, 'user')))
+    .then(user => reply(createToken({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      scope: 'user',
+      isTeacher: user.isTeacher,
+      isExpert: user.isExpert,
+    })))
     .then(reply)
     .then(sendMail({
       to: request.payload.email,
@@ -181,6 +195,8 @@ export const oauth2Authenticate = async (request, reply) => {
         locale: oa2User.lang_name,
         oauth2Id: oa2User.id,
         imageUrl: oa2User.avatar_thumb,
+        isTeacher: true, // OAuth2 logins only available for teachers
+        isExpert: false,
       });
     }
 
@@ -190,7 +206,14 @@ export const oauth2Authenticate = async (request, reply) => {
       <script type="text/javascript">
         setInterval(function() {
           window.postMessage(JSON.stringify(${JSON.stringify(
-            createToken(registeredUser.id, registeredUser.email, registeredUser.scope),
+            createToken({
+              id: registeredUser.id,
+              name: registeredUser.name,
+              email: registeredUser.email,
+              scope: 'user',
+              isTeacher: registeredUser.isTeacher,
+              isExpert: registeredUser.isExpert,
+            }),
           )}))},
         1000);
       </script>`,
