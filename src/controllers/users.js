@@ -147,7 +147,9 @@ export const registerUser = (request, reply) => {
     .then(sendMail({
       to: request.payload.email,
       subject: 'Welcome to XPRT',
-      text: 'Account created',
+      text: `Hello ${request.payload.name}!\n\nThank you for registering to the XPRT platform.\n` +
+            `You may now log in at ${config.frontendUrl}\n\n` +
+            'Best regards,\nThe XPRT team.',
     }))
     .catch((err) => {
       if (err.constraint === 'users_email_unique') {

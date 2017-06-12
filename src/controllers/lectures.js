@@ -77,8 +77,8 @@ export const changeInvitationStatus = async (request, reply) => {
           to: teacher.email,
           subject: `Lecture invitation ${updatedLecture.status} by ${user.name}`,
           text: `${user.name} has ${updatedLecture.status} your lecture invitation.\n\n` +
-                `Manage your invitations at ${config.frontendUrl}/profile`
-          ,
+                'Manage your invitations in the XPRT mobile app' +
+                'Best regards,\nThe XPRT team.',
         });
       })
       .catch(err => console.log('Error while sending lecture change e-mail', err));
@@ -158,7 +158,9 @@ export const createLecture = async (request, reply) => {
         sendMail({
           to: expert.email,
           subject: 'Lecture invitation received',
-          text: 'You have been sent a lecture invitation',
+          text: 'You have been sent a lecture invitation.\n\n' +
+                `Manage your invitations at ${config.frontendUrl}/profile` +
+                'Best regards,\nThe XPRT team.',
         });
       })
       .catch(err => console.log('Error while sending lecture invitation e-mail', err));
@@ -202,18 +204,35 @@ export const updateLecture = async (request, reply) => {
       .then(async (updatedLecture) => {
         reply(updatedLecture);
 
-        const diffKeys = reduce(request.payload, (result, value, key) =>
-          (isEqual(value, updatedLecture[key]) ? result : result.concat(key))
-        , []);
+        const diffKeys = reduce(request.payload, (result, value, key) => {
+          if (key === 'dateOption1' || key === 'dateOption2') {
+            return isEqual(
+              new Date(value).getTime(),
+              new Date(lecture[key]).getTime(),
+            ) ? result : result.concat(key);
+          }
+
+          return isEqual(value, lecture[key]) ? result : result.concat(key);
+        }, []);
+
+        let changes = '';
+
+        diffKeys.forEach(
+          key => (changes += `- ${key.charAt(0).toUpperCase()}${key.slice(1)} changed from:\n` +
+                 `    ${lecture[key]}\n` +
+                 '  to: \n' +
+                 `    ${updatedLecture[key]}\n\n`),
+        );
 
         const expert = await dbGetUser(updatedLecture.expertId);
         sendMail({
           to: expert.email,
           subject: 'Lecture invitation changed',
-          text: `Teacher '${request.pre.user.name}' has modified your lecture invitation` +
+          text: `Teacher '${request.pre.user.name}' has modified your lecture invitation.\n\n` +
                 // TODO: more user friendly
-                `Changed fields: ${JSON.stringify(diffKeys, null, 4)}\n\n` +
-                `Manage your invitations at ${config.frontendUrl}/profile`,
+                `Changes: \n\n${changes}\n\n` +
+                `Manage your invitations at ${config.frontendUrl}/profile\n\n` +
+                'Best regards,\nThe XPRT team.',
         });
       })
       .catch(err => console.log('Error while sending lecture change e-mail', err));
