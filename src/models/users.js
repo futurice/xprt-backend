@@ -47,6 +47,12 @@ export const dbGetUser = id => (
     .where({ id })
 );
 
+export const dbGetUserImage = id => (
+  knex('users')
+    .first('image')
+    .where({ id })
+);
+
 export const dbGetOAuth2User = oauth2Id => (
   knex('users')
     .first(userFields)

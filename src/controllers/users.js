@@ -12,6 +12,7 @@ import { createToken, hashPassword } from '../utils/auth';
 import {
   dbGetUsers,
   dbGetUser,
+  dbGetUserImage,
   dbGetOAuth2User,
   dbDelUser,
   dbUpdateUser,
@@ -25,7 +26,7 @@ export const getUsers = (request, reply) => dbGetUsers(request.query.filter || {
 export const getUser = (request, reply) => dbGetUser(request.params.userId).then(reply);
 
 // PUBLIC: Fetch profile picture
-export const getProfilePicture = (request, reply) => dbGetUser(request.params.userId)
+export const getProfilePicture = (request, reply) => dbGetUserImage(request.params.userId)
   .then((user) => {
     if (!user) {
       reply(Boom.notFound());
