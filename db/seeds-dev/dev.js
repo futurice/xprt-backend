@@ -21,8 +21,8 @@ fixtureFactory.register('user', {
   ),
 
   title: 'name.jobTitle',
-  company: 'lorem.sentence',
-  details: 'lorem.sentence',
+  company: 'company.companyName',
+  details: 'lorem.sentences',
   address: 'address.streetAddress',
   phone: 'phone.phoneNumber',
   edStage: 'lorem.sentence',
@@ -44,7 +44,7 @@ fixtureFactory.register('user', {
 fixtureFactory.register('lecture', {
   createdAt: 'date.recent',
   title: 'lorem.words',
-  description: 'lorem.sentence',
+  description: 'lorem.sentences',
   status: () => ([
     'pending',
     'accepted',

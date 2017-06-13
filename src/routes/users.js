@@ -39,6 +39,7 @@ const validateRegistrationFields = {
       address: Joi.string().optional(),
       phone: Joi.string().optional(),
       company: Joi.string().optional(),
+      officeVisit: Joi.boolean().optional(),
       subjects: Joi.array().optional(Joi.string()),
       area: Joi.array().optional(Joi.string()),
     },
