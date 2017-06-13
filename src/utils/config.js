@@ -19,8 +19,8 @@ const requiredEnvironmentVariables = [
   'SMTP_USER',
   'SMTP_PASSWORD',
   'SMTP_TLS',
-  'BACKEND_DOMAIN',
-  'FRONTEND_DOMAIN',
+  'BACKEND_URL',
+  'FRONTEND_URL',
   'ADMIN_EMAIL_TO',
 ];
 
