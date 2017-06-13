@@ -58,6 +58,11 @@ export const changeInvitationStatus = async (request, reply) => {
       }
     }
 
+    // Declined lectures cannot be modified
+    if (lecture.status === 'declined') {
+      return reply(Boom.forbidden('Lecture has already been declined.'));
+    }
+
     const fields = {
       status: request.payload.status,
     };
@@ -189,6 +194,11 @@ export const updateLecture = async (request, reply) => {
         request.pre.user.id !== lecture.expertId &&
         request.pre.user.id !== lecture.teacherId) {
       return reply(Boom.unauthorized('Unprivileged users may only access own lectures'));
+    }
+
+    // Declined lectures cannot be modified (other than by admins)
+    if (request.pre.user.scope !== 'admin' && lecture.status === 'declined') {
+      return reply(Boom.forbidden('Lecture has already been declined.'));
     }
 
     await dbUpdateLecture(
