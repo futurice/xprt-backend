@@ -39,6 +39,18 @@ $ yarn db:seed
 $ DATABASE_URL=postgres://user:pass@hostname/dbname yarn register:admin
 ```
 
+## Note when deploying to Heroku
+
+If using the yarn package manager in Heroku environments you need to do this
+before deployment:
+
+```
+heroku config:set NODE_MODULES_CACHE=false
+```
+
+Failing to do so will result in the Sharp module build to fail, and the server
+won't start either as a result.
+
 ## Environment variables (production environments)
 ### Environments
 #### Heroku
