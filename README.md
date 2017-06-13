@@ -1,4 +1,4 @@
-# xprt-backend
+# XPRT backend
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/FruitieX/backend-hipster-kit.svg)](https://greenkeeper.io/)
 
