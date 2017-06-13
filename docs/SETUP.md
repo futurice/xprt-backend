@@ -98,7 +98,10 @@ SMTP_TLS=true
 ADMIN_EMAIL_TO=example@example.com
 
 # Root of Web frontend (for links in emails)
-WWW_DOMAIN=https://xprt.example.com
+FRONTEND_URL=https://xprt.example.com
+
+# Root URL to backend (needed for correct profile picture URLs)
+BACKEND_URL=https://xprt-backend.example.com
 ```
 
 ## Run backend
