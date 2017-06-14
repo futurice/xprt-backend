@@ -229,6 +229,7 @@ export const oauth2Authenticate = async (request, reply) => {
       return reply(Boom.conflict('Account already exists. Try using another email address.'));
     }
 
+    console.log('Unknown error while performing OAuth2 login:', err);
     return reply(Boom.badImplementation(err));
   }
 };
