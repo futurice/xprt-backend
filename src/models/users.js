@@ -78,11 +78,13 @@ export const dbCreateUser = ({ password, ...fields }) => (
       .returning(userFields)
       .then(results => results[0]); // return only first result
 
-    await trx('secrets')
-      .insert({
-        ownerId: user.id,
-        password,
-      });
+    if (password) {
+      await trx('secrets')
+        .insert({
+          ownerId: user.id,
+          password,
+        });
+    }
 
     if (!fields.imageUrl) {
       await trx('users')
