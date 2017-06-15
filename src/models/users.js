@@ -63,6 +63,8 @@ export const dbUpdateUser = (id, fields) => (
   knex('users')
     .update({ ...fields })
     .where({ id })
+    .returning(userFields)
+    .then(results => results[0]) // return only first result
 );
 
 export const dbDelUser = id => (
